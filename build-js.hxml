@@ -1,0 +1,3 @@
+-js bin/HelloWorld.js
+-main HelloWorld
+-cp src

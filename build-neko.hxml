@@ -1,0 +1,3 @@
+-neko bin/HelloWorld.n
+-main HelloWorld
+-cp src
