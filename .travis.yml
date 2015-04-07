@@ -26,3 +26,7 @@ script:
   - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
   - haxe build-cpp.hxml && ./bin/HelloWorld
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then haxe build-python.hxml && python3 bin/HelloWorld.py; fi
+
+cache:
+  directories:
+    - $HOME/haxe/lib
