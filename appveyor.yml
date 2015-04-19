@@ -17,9 +17,6 @@ install:
     - haxelib install hxjava > log.txt || type log.txt
     - haxelib install hxcs > log.txt || type log.txt
     - haxelib list
-    # Install test dependencies
-    - cinst php -version 5.6.3 -y
-    - setx PATH "C:\tools\php;%PATH%"
 
 # We don't use the build section, but do both build and 
 # test in `test_script:`.
@@ -32,7 +29,7 @@ test_script:
   - haxe build-neko.hxml && neko bin\HelloWorld.n
   - haxe build-js.hxml && node bin\HelloWorld.js
   - haxe build-java.hxml && java -jar bin\HelloWorld.jar
-  - haxe build-php.hxml && php bin\index.php
+  - haxe build-php.hxml # AppVeyor doesn't provide php. Just run the haxe compiler for now
   - haxe build-cs.hxml && bin\bin\HelloWorld.exe
   - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
   - haxe build-cpp.hxml && bin\HelloWorld.exe
