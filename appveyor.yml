@@ -1,0 +1,30 @@
+version: "{build}"
+
+environment:
+    global:
+        HAXELIB_ROOT: C:\projects\haxelib
+
+install:
+    # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
+    - cinst haxe -y
+    - RefreshEnv
+    # Setup haxelib
+    - mkdir "%HAXELIB_ROOT%"
+    - haxelib setup "%HAXELIB_ROOT%"
+    # Install project dependencies
+    - haxelib install hxcpp > log.txt || type log.txt
+    - haxelib install hxjava > log.txt || type log.txt
+    - haxelib install hxcs > log.txt || type log.txt
+    - haxelib list
+
+build: off
+
+test_script:
+  - haxe build-interp.hxml
+  - haxe build-neko.hxml && neko bin\HelloWorld.n
+  - haxe build-js.hxml && node bin\HelloWorld.js
+  - haxe build-java.hxml && java -jar bin\HelloWorld.jar
+  - haxe build-php.hxml # Installing PHP is troublesome. Just run the haxe compiler for now
+  - haxe build-cs.hxml && mono bin\bin\HelloWorld.exe
+  - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
+  - haxe build-cpp.hxml && bin\HelloWorld.exe
