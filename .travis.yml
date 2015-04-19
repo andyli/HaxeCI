@@ -12,7 +12,9 @@ addons:
   apt:
     packages:
       - python3
-      - php-zeroc-ice # use it to install php5 for now
+      - php5-cli
+      - mono-devel
+      - mono-mcs
 
 install:
   - haxelib install hxcpp
@@ -26,11 +28,7 @@ script:
   - haxe build-js.hxml && node bin/HelloWorld.js
   - haxe build-java.hxml && java -jar bin/HelloWorld.jar
   - haxe build-php.hxml && php bin/index.php
-  - haxe build-cs.hxml -D no-compilation # Missing mono compiler. Just run the haxe compiler for now
+  - haxe build-cs.hxml && mono bin/bin/HelloWorld.exe
   - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
   - haxe build-cpp.hxml && ./bin/HelloWorld
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then haxe build-python.hxml && python3 bin/HelloWorld.py; fi
-
-cache:
-  directories:
-    - $HOME/haxe/lib
