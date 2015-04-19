@@ -6,17 +6,25 @@ environment:
 
 install:
     # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
-    - cinst haxe -y
+    - cinst haxe -version 3.1.3 -y
     - RefreshEnv
     # Setup haxelib
     - mkdir "%HAXELIB_ROOT%"
     - haxelib setup "%HAXELIB_ROOT%"
     # Install project dependencies
+    # `> log.txt || type log.txt` is for muting the output unless there is an error
     - haxelib install hxcpp > log.txt || type log.txt
     - haxelib install hxjava > log.txt || type log.txt
     - haxelib install hxcs > log.txt || type log.txt
     - haxelib list
+    # Install test dependencies
+    - cinst php -version 5.6.3 -y
+    - setx PATH=%PATH%;C:\tools\php
 
+# We don't use the build section, but do both build and 
+# test in `test_script:`.
+# It is just because it is more similar to the TravisCI config,
+# thus it would be easier to update both of them.
 build: off
 
 test_script:
@@ -24,7 +32,7 @@ test_script:
   - haxe build-neko.hxml && neko bin\HelloWorld.n
   - haxe build-js.hxml && node bin\HelloWorld.js
   - haxe build-java.hxml && java -jar bin\HelloWorld.jar
-  - haxe build-php.hxml # Installing PHP is troublesome. Just run the haxe compiler for now
-  - haxe build-cs.hxml && mono bin\bin\HelloWorld.exe
+  - haxe build-php.hxml && php bin\index.php
+  - haxe build-cs.hxml && bin\bin\HelloWorld.exe
   - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
   - haxe build-cpp.hxml && bin\HelloWorld.exe
