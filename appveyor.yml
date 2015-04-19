@@ -19,7 +19,7 @@ install:
     - haxelib list
     # Install test dependencies
     - cinst php -version 5.6.3 -y
-    - setx PATH %PATH%;C:\tools\php
+    - setx PATH "C:\tools\php;%PATH%"
 
 # We don't use the build section, but do both build and 
 # test in `test_script:`.
