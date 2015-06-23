@@ -22,12 +22,23 @@ addons:
       - php5-cli
       - mono-devel
       - mono-mcs
+      # Flash dependencies
+      - libcurl3:i386
+      - libglib2.0-0:i386
+      - libx11-6:i386
+      - libxext6:i386
+      - libxt6:i386
+      - libxcursor1:i386
+      - libnss3:i386
+      - libgtk2.0-0:i386
 
 install:
   # Install project dependencies
   - haxelib install hxcpp
   - haxelib install hxjava
   - haxelib install hxcs
+  - chmod +x .travis-flash-setup.sh && ./.travis-flash-setup.sh
+  - chmod +x .travis-flash-run.sh
   - haxelib list
 
 script:
@@ -37,6 +48,6 @@ script:
   - haxe build-java.hxml && java -jar bin/HelloWorld.jar
   - haxe build-php.hxml && php bin/index.php
   - haxe build-cs.hxml && mono bin/bin/HelloWorld.exe
-  - haxe build-flash.hxml # Flash testing is hard to setup. Just run the haxe compiler for now
+  - haxe build-flash.hxml && ./.travis-flash-run.sh bin/HelloWorld.swf
   - haxe build-cpp.hxml && ./bin/HelloWorld
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then haxe build-python.hxml && python3 bin/HelloWorld.py; fi
