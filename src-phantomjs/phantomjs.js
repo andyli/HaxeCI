@@ -1,15 +1,16 @@
 var page = require('webpage').create();
 var args = require('system').args;
+
 var successMsg = args.length > 1 && args[1] ? args[1] : null;
+var success = successMsg === null;
 
 page.onConsoleMessage = function(msg) {
   console.log(msg);
-  if(successMsg !== null && successMsg === msg) phantom.exit(0);
+  if(!success && successMsg === msg) success = true;
 };
 
 page.open('bin/phantomjs.html', function(status) {
-  // If we arrive here, no successMsg has been found in console.log.
-  var success = status === 'success' && successMsg === null;
+  success = status === 'success' && success;
   phantom.exit(success ? 0 : 1);
 
   // If you want to search for successMsg in document.body instead:
