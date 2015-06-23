@@ -38,8 +38,8 @@ install:
   - haxelib install hxjava
   - haxelib install hxcs
   - haxelib list
-  - chmod +x .travis-flash-install.sh && ./.travis-flash-install.sh
-  - chmod +x .travis-flash-script.sh
+  - chmod +x .travis*.sh 
+  - ./.travis-flash-install.sh
 
 script:
   - haxe build-interp.hxml
