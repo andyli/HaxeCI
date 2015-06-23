@@ -37,8 +37,8 @@ install:
   - haxelib install hxcpp
   - haxelib install hxjava
   - haxelib install hxcs
-  - chmod +x ./.travis-flash-setup.sh && ./.travis-flash-setup.sh
-  - chmod +x ./.travis-flash-run.sh
+  - chmod +x .travis-flash-setup.sh && ./.travis-flash-setup.sh
+  - chmod +x .travis-flash-run.sh
   - haxelib list
 
 script:
