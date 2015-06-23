@@ -12,8 +12,4 @@ page.onConsoleMessage = function(msg) {
 page.open('bin/phantomjs.html', function(status) {
   success = status === 'success' && success;
   phantom.exit(success ? 0 : 1);
-
-  // If you want to search for successMsg in document.body instead:
-  // var result = page.evaluate(function() { return document.body.innerText; });
-  // phantom.exit(success || result.indexOf(successMsg) >= 0 ? 0 : 1);
 });
