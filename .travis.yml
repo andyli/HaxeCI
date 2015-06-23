@@ -37,17 +37,19 @@ install:
   - haxelib install hxcpp
   - haxelib install hxjava
   - haxelib install hxcs
-  - chmod +x .travis-flash-setup.sh && ./.travis-flash-setup.sh
-  - chmod +x .travis-flash-run.sh
   - haxelib list
+  - chmod +x .travis-flash-install.sh && ./.travis-flash-install.sh
+  - chmod +x .travis-flash-script.sh
 
 script:
   - haxe build-interp.hxml
   - haxe build-neko.hxml && neko bin/HelloWorld.n
-  - haxe build-js.hxml && node bin/HelloWorld.js
+  - haxe build-nodejs.hxml && node bin/HelloNodeJs.js
+  # See .travis-phantomjs-script.sh for usage:
+  - haxe build-phantomjs.hxml && ./.travis-phantomjs-script.sh HelloPhantomJs.js 'Hello world!'
   - haxe build-java.hxml && java -jar bin/HelloWorld.jar
   - haxe build-php.hxml && php bin/index.php
   - haxe build-cs.hxml && mono bin/bin/HelloWorld.exe
-  - haxe build-flash.hxml && ./.travis-flash-run.sh bin/HelloWorld.swf
+  - haxe build-flash.hxml && ./.travis-flash-script.sh bin/HelloWorld.swf
   - haxe build-cpp.hxml && ./bin/HelloWorld
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then haxe build-python.hxml && python3 bin/HelloWorld.py; fi
