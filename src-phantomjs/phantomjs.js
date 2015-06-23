@@ -3,6 +3,7 @@ var args = require('system').args;
 var successMsg = args.length > 1 && args[1] ? args[1] : null;
 
 page.onConsoleMessage = function(msg) {
+  console.log(msg);
   if(successMsg !== null && successMsg === msg) phantom.exit(0);
 };
 
