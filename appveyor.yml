@@ -27,7 +27,7 @@ build: off
 test_script:
   - haxe build-interp.hxml
   - haxe build-neko.hxml && neko bin\HelloWorld.n
-  - haxe build-js.hxml && node bin\HelloWorld.js
+  - haxe build-nodejs.hxml && node bin\HelloWorld.js
   - haxe build-java.hxml && java -jar bin\HelloWorld.jar
   - haxe build-php.hxml # AppVeyor doesn't provide php. Just run the haxe compiler for now
   - haxe build-cs.hxml && bin\bin\HelloWorld.exe
