@@ -32,8 +32,6 @@ class Install {
 					// xvfb
 					putEnv("DISPLAY", ":99.0");
 					putEnv("AUDIODEV", "null");
-					if (command("sh", ["-e", "/etc/init.d/xvfb", "start"]) != 0)
-						throw "failed to start xvfb";
 				}
 
 				// Download and unzip the flash player
