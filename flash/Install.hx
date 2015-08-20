@@ -39,7 +39,7 @@ class Install {
 				// Download and unzip the flash player
 				if (command("wget", [fpDownload]) != 0)
 					throw "failed to download flash player";
-				if (command("tar", ["-xf", new Path(fpDownload).file, "-C", "flash"]) != 0)
+				if (command("tar", ["-xf", Path.withoutDirectory(fpDownload), "-C", "flash"]) != 0)
 					throw "failed to extract flash player";
 			case "Mac":
 				if (command("brew", ["install", "caskroom/cask/brew-cask"]) != 0)
