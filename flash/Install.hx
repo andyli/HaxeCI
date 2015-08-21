@@ -11,7 +11,7 @@ class Install {
 		case "Mac":
 			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/18/flashplayer_18_sa_debug.dmg";
 		case "Windows":
-			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/18/flashplayer_18_sa_debug.exe";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/18/flashplayer_18_sa_debug.exe";
 		case _:
 			throw "unsupported system";
 	}
