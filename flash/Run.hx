@@ -4,6 +4,7 @@ import sys.io.File.*;
 import haxe.io.*;
 
 class Run {
+	// https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html
 	static var flashlog(default, never) = switch (systemName()) {
 		case "Linux":
 			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/Logs/flashlog.txt"]);

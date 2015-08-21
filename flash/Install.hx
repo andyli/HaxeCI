@@ -5,6 +5,7 @@ import haxe.*;
 import haxe.io.*;
 
 class Install {
+	// https://www.adobe.com/support/flashplayer/downloads.html
 	static var fpDownload(default, never) = switch (systemName()) {
 		case "Linux":
 			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/11/flashplayer_11_sa_debug.i386.tar.gz";
@@ -15,16 +16,18 @@ class Install {
 		case _:
 			throw "unsupported system";
 	}
-	static var mmcfgPath(default, never) = switch (systemName()) {
+	// https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html
+	static var mmcfg(default, never) = switch (systemName()) {
 		case "Linux":
 			Path.join([getEnv("HOME"), "mm.cfg"]);
 		case "Mac":
 			"/Library/Application Support/Macromedia/mm.cfg";
 		case "Windows":
-			Path.join([getEnv("SYSTEMROOT"), "system32", "Macromed", "Flash", "mm.cfg"]);
+			Path.join([getEnv("HOMEDRIVE") + getEnv("HOMEPATH"), "mm.cfg"]);
 		case _:
 			throw "unsupported system";
 	}
+	// http://help.adobe.com/en_US/ActionScript/3.0_ProgrammingAS3/WS5b3ccc516d4fbf351e63e3d118a9b90204-7c95.html
 	static var fpTrust(default, never) = switch (systemName()) {
 		case "Linux":
 			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/#Security/FlashPlayerTrust"]);
@@ -57,8 +60,8 @@ class Install {
 		
 
 		// Create a configuration file so the trace log is enabled
-		createDirectory(Path.directory(mmcfgPath));
-		saveContent(mmcfgPath, "ErrorReportingEnable=1\nTraceOutputFileEnable=1");
+		createDirectory(Path.directory(mmcfg));
+		saveContent(mmcfg, "ErrorReportingEnable=1\nTraceOutputFileEnable=1");
 
 		// Add the current directory as trusted, so exit() can be used
 		createDirectory(fpTrust);
