@@ -1,6 +1,7 @@
 import Sys.*;
 import sys.FileSystem.*;
 import sys.io.File.*;
+import haxe.*;
 import haxe.io.*;
 
 class Install {
@@ -49,8 +50,7 @@ class Install {
 					throw "failed to install flash-player-debugger";
 			case "Windows":
 				// Download flash player
-				if (command("appveyor", ["DownloadFile", fpDownload, "-FileName", "flash\\flashplayer.exe"]) != 0)
-					throw "failed to download flash player";
+				download(fpDownload, "flash\\flashplayer.exe");
 			case _:
 				throw "unsupported system";
 		}
@@ -63,5 +63,12 @@ class Install {
 		// Add the current directory as trusted, so exit() can be used
 		createDirectory(fpTrust);
 		saveContent(Path.join([fpTrust, "test.cfg"]), getCwd());
+	}
+	static function download(url:String, saveAs:String):Void {
+		var http = new Http(url);
+		http.onError = function(e) {
+			throw e;
+		};
+		http.customRequest(false, write(saveAs));
 	}
 }
