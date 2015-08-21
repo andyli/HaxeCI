@@ -9,6 +9,8 @@ class Run {
 			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/Logs/flashlog.txt"]);
 		case "Mac":
 			Path.join([getEnv("HOME"), "Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt"]);
+		case "Windows":
+			Path.join([getEnv("APPDATA"), "Macromedia", "Flash Player", "Logs", "flashlog.txt"]);
 		case _:
 			throw "unsupported system";
 	}
@@ -20,6 +22,8 @@ class Run {
 				command("xvfb-run", ["flash/flashplayerdebugger", swf]);
 			case "Mac":
 				command("flash/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger", [fullPath(swf)]);
+			case "Windows":
+				command("flash/flashplayer.exe", [fullPath(swf)]);
 			case _:
 				throw "unsupported platform";
 		}
