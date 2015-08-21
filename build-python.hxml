@@ -1,3 +1,2 @@
+build-each.hxml
 -python bin/HelloWorld.py
--main HelloWorld
--cp src

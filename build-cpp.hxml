@@ -1,3 +1,2 @@
+build-each.hxml
 -cpp bin
--main HelloWorld
--cp src

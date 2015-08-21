@@ -1,3 +1,2 @@
--main HelloWorld
--cp src
+build-each.hxml
 --interp

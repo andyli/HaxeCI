@@ -1,3 +1,2 @@
+build-each.hxml
 -swf bin/HelloWorld.swf
--main HelloWorld
--cp src

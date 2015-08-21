@@ -42,6 +42,7 @@ install:
   - if [ -z "${TRAVIS_OS_NAME}" ]; then
       export TRAVIS_OS_NAME=linux;
     fi
+  # os-specific config
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       export DISPLAY=:99.0;
       export AUDIODEV=null;
@@ -62,8 +63,8 @@ install:
 script:
   - haxe build-interp.hxml
   - haxe build-neko.hxml         && neko bin/HelloWorld.n
-  - haxe build-nodejs.hxml       && node bin/HelloWorld.js
-  - haxe build-phantomjs.hxml    && haxe phantomjs/run.hxml HelloWorld.js 'Hello world!'
+  - haxe build-js.hxml           && node bin/HelloWorld.js
+                                 && haxe phantomjs/run.hxml HelloWorld.js 'Hello world!'
   - haxe build-java.hxml         && java -jar bin/HelloWorld.jar
   - haxe build-php.hxml          && php bin/index.php
   - haxe build-cs.hxml           && mono bin/bin/HelloWorld.exe

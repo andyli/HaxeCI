@@ -1,3 +1,2 @@
+build-each.hxml
 -php bin
--main HelloWorld
--cp src
