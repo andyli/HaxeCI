@@ -38,7 +38,20 @@ addons:
       - ia32-libs-multiarch
 
 install:
-  # Install project dependencies
+  # For our forks that do not have mult-os enabled...
+  - if [ -z "${TRAVIS_OS_NAME}" ]; then
+      export TRAVIS_OS_NAME=linux;
+    fi
+  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      export DISPLAY=:99.0;
+      export AUDIODEV=null;
+    elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+      brew update;
+      brew install mono;
+      brew install phantomjs;
+      brew install python3;
+    fi
+  # Install haxelibs
   - haxelib install hxcpp
   - haxelib install hxjava
   - haxelib install hxcs
@@ -48,12 +61,12 @@ install:
 
 script:
   - haxe build-interp.hxml
-  - haxe build-neko.hxml      && neko bin/HelloWorld.n
-  - haxe build-nodejs.hxml    && node bin/HelloWorld.js
-  - haxe build-phantomjs.hxml && haxe phantomjs/run.hxml HelloWorld.js 'Hello world!'
-  - haxe build-java.hxml      && java -jar bin/HelloWorld.jar
-  - haxe build-php.hxml       && php bin/index.php
-  - haxe build-cs.hxml        && mono bin/bin/HelloWorld.exe
-  - haxe build-flash.hxml     && haxe flash/run.hxml bin/HelloWorld.swf
-  - haxe build-cpp.hxml       && ./bin/HelloWorld
-  - haxe build-python.hxml    && python3 bin/HelloWorld.py
+  - haxe build-neko.hxml         && neko bin/HelloWorld.n
+  - haxe build-nodejs.hxml       && node bin/HelloWorld.js
+  - haxe build-phantomjs.hxml    && haxe phantomjs/run.hxml HelloWorld.js 'Hello world!'
+  - haxe build-java.hxml         && java -jar bin/HelloWorld.jar
+  - haxe build-php.hxml          && php bin/index.php
+  - haxe build-cs.hxml           && mono bin/bin/HelloWorld.exe
+  - haxe build-flash.hxml -D fdb && haxe flash/run.hxml bin/HelloWorld.swf
+  - haxe build-cpp.hxml          && ./bin/HelloWorld
+  - haxe build-python.hxml       && python3 bin/HelloWorld.py

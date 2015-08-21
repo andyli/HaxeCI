@@ -9,7 +9,7 @@ class Install {
 		case "Linux":
 			Path.join([getEnv("HOME"), "mm.cfg"]);
 		case "Mac":
-			Path.join([getEnv("HOME"), "Library/Application Support/Macromedia/mm.cfg"]);
+			"/Library/Application Support/Macromedia/mm.cfg";
 		case "Windows":
 			Path.join([getEnv("SYSTEMROOT"), "system32", "Macromed", "Flash", "mm.cfg"]);
 		case _:
@@ -19,7 +19,7 @@ class Install {
 		case "Linux":
 			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/#Security/FlashPlayerTrust"]);
 		case "Mac":
-			Path.join([getEnv("HOME"), "Library/Application Support/Macromedia/FlashPlayerTrust"]);
+			"/Library/Application Support/Macromedia/FlashPlayerTrust";
 		case "Windows":
 			Path.join([getEnv("SYSTEMROOT"), "system32", "Macromed", "Flash", "FlashPlayerTrust"]);
 		case _:
@@ -28,12 +28,6 @@ class Install {
 	static function main() {
 		switch (systemName()) {
 			case "Linux":
-				if (getEnv("TRAVIS") == "true") {
-					// xvfb
-					putEnv("DISPLAY", ":99.0");
-					putEnv("AUDIODEV", "null");
-				}
-
 				// Download and unzip the flash player
 				if (command("wget", [fpDownload]) != 0)
 					throw "failed to download flash player";

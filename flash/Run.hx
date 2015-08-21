@@ -1,7 +1,17 @@
 import Sys.*;
 import sys.FileSystem.*;
+import sys.io.File.*;
+import haxe.io.*;
 
 class Run {
+	static var flashlog(default, never) = switch (systemName()) {
+		case "Linux":
+			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/Logs/flashlog.txt"]);
+		case "Mac":
+			Path.join([getEnv("HOME"), "Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt"]);
+		case _:
+			throw "unsupported system";
+	}
 	static function main() {
 		var args = args();
 		var swf = args[0];
@@ -13,6 +23,7 @@ class Run {
 			case _:
 				throw "unsupported platform";
 		}
+		println(getContent(flashlog));
 		exit(exitCode);
 	}
 }
