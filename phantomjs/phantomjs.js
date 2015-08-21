@@ -1,15 +1,30 @@
 var page = require('webpage').create();
 var args = require('system').args;
-
-var successMsg = args.length > 1 && args[1] ? args[1] : null;
-var success = successMsg === null;
+var hasError = false;
 
 page.onConsoleMessage = function(msg) {
   console.log(msg);
-  if(!success && successMsg === msg) success = true;
+};
+
+page.onError = function(msg, trace) {
+  hasError = true;
+  var msgStack = ['ERROR: ' + msg];
+  if (trace && trace.length) {
+    msgStack.push('TRACE:');
+    trace.forEach(function(t) {
+      msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function +'")' : ''));
+    });
+  }
+  console.error(msgStack.join('\n'));
+};
+
+page.onResourceError = function(resourceError) {
+  hasError = true;
+  console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+  console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
 };
 
 page.open('bin/phantomjs.html', function(status) {
-  success = status === 'success' && success;
+  var success = status === 'success' && !hasError;
   phantom.exit(success ? 0 : 1);
 });

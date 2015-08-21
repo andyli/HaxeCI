@@ -1,6 +1,8 @@
 import Sys.*;
+import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.*;
+import haxe.io.*;
 using StringTools;
 
 /**
@@ -11,22 +13,15 @@ class Run {
     static var phantomjsHtml(default, never) = "phantomjs/phantomjs.html";
     static function main() {
         var args = args();
-        var jsFile = args[0];     // The compiled js file, relative to "bin".
-        var successMsg = args[1]; // A trace/console success message to look for. (optional)
+        var jsFile = fullPath(args[0]);
 
         var tmpl = new Template(getContent(phantomjsHtml));
         var html = tmpl.execute({
-        	jsFile: jsFile
+        	jsFile: Path.withoutDirectory(jsFile)
         });
-        saveContent("bin/phantomjs.html", html);
+        saveContent(Path.join([Path.directory(jsFile), "phantomjs.html"]), html);
 
-        var exitCode = command(
-        	"phantomjs",
-        	if (successMsg == null)
-        		[phantomjsRunner]
-        	else
-        		[phantomjsRunner, successMsg]
-        );
+        var exitCode = command("phantomjs", [phantomjsRunner]);
         exit(exitCode);
     }
 }

@@ -64,7 +64,7 @@ script:
   - haxe build-interp.hxml
   - haxe build-neko.hxml         && neko bin/HelloWorld.n
   - haxe build-js.hxml           && node bin/HelloWorld.js
-                                 && haxe phantomjs/run.hxml HelloWorld.js 'Hello world!'
+                                 && haxe phantomjs/run.hxml bin/HelloWorld.js
   - haxe build-java.hxml         && java -jar bin/HelloWorld.jar
   - haxe build-php.hxml          && php bin/index.php
   - haxe build-cs.hxml           && mono bin/bin/HelloWorld.exe
