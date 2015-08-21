@@ -48,6 +48,7 @@ class Install {
 		
 
 		// Create a configuration file so the trace log is enabled
+		createDirectory(Path.directory(mmcfgPath));
 		saveContent(mmcfgPath, "ErrorReportingEnable=1\nTraceOutputFileEnable=1");
 
 		// Add the current directory as trusted, so exit() can be used
