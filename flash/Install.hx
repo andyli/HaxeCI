@@ -47,10 +47,12 @@ class Install {
 					throw "failed to brew install caskroom/cask/brew-cask";
 				if (command("brew", ["cask", "install", "flash-player-debugger", "--appdir=flash"]) != 0)
 					throw "failed to install flash-player-debugger";
-			case "Window":
+			case "Windows":
 				// Download flash player
 				if (command("appveyor", ["DownloadFile", fpDownload, "-FileName", "flash\\flashplayer.exe"]) != 0)
 					throw "failed to download flash player";
+			case _:
+				throw "unsupported system";
 		}
 		
 
