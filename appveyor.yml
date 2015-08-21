@@ -35,7 +35,7 @@ test_script:
   - haxe build-js.hxml           && node bin\HelloWorld.js
                                  && haxe phantomjs\run.hxml bin\HelloWorld.js
   - haxe build-java.hxml         && java -jar bin\HelloWorld.jar
-  - haxe build-php.hxml          && C:\tools\php.exe bin\index.php
+  - haxe build-php.hxml          && C:\tools\php\php.exe bin\index.php
   - haxe build-cs.hxml           && bin\bin\HelloWorld.exe
   - haxe build-flash.hxml -D fdb && haxe flash\run.hxml bin\HelloWorld.swf
   - haxe build-cpp.hxml          && bin\HelloWorld.exe
