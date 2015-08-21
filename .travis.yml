@@ -1,5 +1,13 @@
 language: haxe
 
+# TravisCI by default run on linux.
+# To enable multi-os support (linux and mac) for a repo,
+# send an email to support@travis-ci.com.
+# http://docs.travis-ci.com/user/multi-os/
+os:
+  - linux
+  - osx
+
 # Test with Haxe 3.2.0 and Haxe development.
 haxe:
   - "3.2.0"
