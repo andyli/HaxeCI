@@ -19,11 +19,19 @@ class Run {
 		var swf = args[0];
 		var exitCode = switch (systemName()) {
 			case "Linux":
-				command("xvfb-run", ["flash/flashplayerdebugger", swf]);
+				// The flash player has some issues with unexplained crashes,
+				// but if it runs about 8 times, it should succeed one of those...
+				var c;
+				for (i in 0...8) {
+					if ((c = command("xvfb-run", ["flash/flashplayerdebugger", swf])) == 0)
+						break;
+					println('retry... (${i+1})');
+				}
+				c;
 			case "Mac":
 				command("flash/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger", [fullPath(swf)]);
 			case "Windows":
-				command("flash/flashplayer.exe", [fullPath(swf)]);
+				command("flash\\flashplayer.exe", [fullPath(swf)]);
 			case _:
 				throw "unsupported platform";
 		}
