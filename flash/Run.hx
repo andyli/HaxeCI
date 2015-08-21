@@ -21,7 +21,7 @@ class Run {
 			case "Linux":
 				// The flash player has some issues with unexplained crashes,
 				// but if it runs about 8 times, it should succeed one of those...
-				var c;
+				var c = -1;
 				for (i in 0...8) {
 					if ((c = command("xvfb-run", ["flash/flashplayerdebugger", swf])) == 0)
 						break;
