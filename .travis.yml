@@ -1,9 +1,7 @@
 language: haxe
 
 # TravisCI by default run on linux.
-# To enable multi-os support (linux and mac) for a repo,
-# send an email to support@travis-ci.com.
-# http://docs.travis-ci.com/user/multi-os/
+# Let's enable both linux and mac builds because why not?
 os:
   - linux
   - osx
