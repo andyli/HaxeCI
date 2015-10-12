@@ -6,9 +6,9 @@ os:
   - linux
   - osx
 
-# Test with Haxe 3.2.0 and Haxe development.
+# Test with Haxe 3.2.1 and Haxe development.
 haxe:
-  - "3.2.0"
+  - "3.2.1"
   - development
 
 matrix:
