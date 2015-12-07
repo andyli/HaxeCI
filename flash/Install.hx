@@ -10,9 +10,9 @@ class Install {
 		case "Linux":
 			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/11/flashplayer_11_sa_debug.i386.tar.gz";
 		case "Mac":
-			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/18/flashplayer_18_sa_debug.dmg";
+			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/19/flashplayer_19_sa_debug.dmg";
 		case "Windows":
-			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/18/flashplayer_18_sa_debug.exe";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/19/flashplayer_19_sa_debug.exe";
 		case _:
 			throw "unsupported system";
 	}
