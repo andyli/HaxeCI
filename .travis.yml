@@ -31,9 +31,14 @@ addons:
       - mono-devel
       - mono-mcs
       # Flash
-      - libgd2-xpm
-      - ia32-libs
-      - ia32-libs-multiarch
+      - libcurl3:i386
+      - libglib2.0-0:i386
+      - libx11-6:i386
+      - libxext6:i386
+      - libxt6:i386
+      - libxcursor1:i386
+      - libnss3:i386
+      - libgtk2.0-0:i386
 
 install:
   # os-specific config
