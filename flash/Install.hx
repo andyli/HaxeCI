@@ -47,8 +47,8 @@ class Install {
 				if (command("tar", ["-xf", Path.withoutDirectory(fpDownload), "-C", "flash"]) != 0)
 					throw "failed to extract flash player";
 			case "Mac":
-				if (command("brew", ["install", "caskroom/cask/brew-cask"]) != 0)
-					throw "failed to brew install caskroom/cask/brew-cask";
+				if (command("brew", ["tap", "caskroom/cask"]) != 0)
+					throw "failed to brew tap caskroom/cask";
 				if (command("brew", ["cask", "install", "flash-player-debugger", "--appdir=flash"]) != 0)
 					throw "failed to install flash-player-debugger";
 			case "Windows":
