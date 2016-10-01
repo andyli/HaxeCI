@@ -1,5 +1,4 @@
 import Sys.*;
-import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.*;
 import haxe.io.*;
@@ -73,5 +72,20 @@ class Install {
 			throw e;
 		};
 		http.customRequest(false, write(saveAs));
+	}
+	static function createDirectory(dir:String):Void {
+		try {
+			sys.FileSystem.createDirectory(dir);
+		} catch(e:Dynamic) {
+			switch (systemName()) {
+				case "Mac", "Linux":
+					if (command("sudo", ["mkdir", "-p", dir]) != 0)
+						throw 'cannot create $dir';
+					if (command("sudo", ["chmod", "a+rw", dir]) != 0)
+						throw 'cannot set permission of $dir';
+				case _:
+					neko.Lib.rethrow(e);
+			}
+		}
 	}
 }

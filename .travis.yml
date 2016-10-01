@@ -59,7 +59,7 @@ install:
       brew install python3;
     fi
   # Download and setup a standalone flash player debugger
-  - sudo haxe flash/install.hxml
+  - haxe flash/install.hxml
   # Install haxelibs
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then
       haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git;
