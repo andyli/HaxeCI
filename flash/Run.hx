@@ -30,7 +30,7 @@ class Run {
 				}
 				c;
 			case "Mac":
-				command("flash/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger", [fullPath(swf)]);
+				command("flash/Flash Player Debugger.app/Contents/MacOS/Flash Player", [fullPath(swf)]);
 			case "Windows":
 				command("flash\\flashplayer.exe", [fullPath(swf)]);
 			case _:
