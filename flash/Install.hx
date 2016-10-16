@@ -48,7 +48,7 @@ class Install {
 			case "Mac":
 				if (command("brew", ["tap", "caskroom/versions"]) != 0)
 					throw "failed to brew tap caskroom/versions";
-				if (command("brew", ["cask", "install", "flash-player-debugger", "--appdir=flash"]) != 0)
+				if (command("brew", ["cask", "install", "flash-player-debugger"]) != 0)
 					throw "failed to install flash-player-debugger";
 			case "Windows":
 				// Download flash player
