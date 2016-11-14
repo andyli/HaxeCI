@@ -53,6 +53,7 @@ install:
       export DISPLAY=:99.0;
       export AUDIODEV=null;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+      brew uninstall --force brew-cask;
       brew update;
       brew install mono;
       brew install phantomjs;

@@ -46,6 +46,9 @@ class Install {
 				if (command("tar", ["-xf", Path.withoutDirectory(fpDownload), "-C", "flash"]) != 0)
 					throw "failed to extract flash player";
 			case "Mac":
+				// https://github.com/caskroom/homebrew-cask/pull/15381
+				if (command("brew", ["uninstall", "--force", "brew-cask"]) != 0)
+					throw "failed to brew uninstall --force brew-cask";
 				if (command("brew", ["tap", "caskroom/versions"]) != 0)
 					throw "failed to brew tap caskroom/versions";
 				if (command("brew", ["cask", "install", "flash-player-debugger"]) != 0)
