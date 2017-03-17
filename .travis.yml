@@ -10,9 +10,9 @@ os:
 # https://docs.travis-ci.com/user/osx-ci-environment/
 osx_image: xcode6.4
 
-# Test with Haxe 3.4.0 and Haxe development.
+# Test with Haxe 3.4.1 and Haxe development.
 haxe:
-  - "3.4.0"
+  - "3.4.1"
   - development
 
 matrix:
