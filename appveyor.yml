@@ -13,9 +13,10 @@ install:
   - haxelib setup "%HAXELIB_ROOT%"
   # Install test dependencies
   - cinst phantomjs -y
-  # Install php with -i to avoid weird error.
+  # Install php
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
-  - cinst php -y -i
+  - ps: Set-Service wuauserv -StartupType Manual
+  - cinst php -y
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
   # Install project dependencies
