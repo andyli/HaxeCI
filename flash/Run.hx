@@ -27,7 +27,7 @@ class Run {
 					if ((c = command("xvfb-run", ["-a", "flash/flashplayerdebugger", swf])) == 0)
 						break;
 					println('retry... (${i+1})');
-					sleep(1);
+					sleep(1.5);
 				}
 				c;
 			case "Mac":
