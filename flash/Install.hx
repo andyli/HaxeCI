@@ -7,11 +7,11 @@ class Install {
 	// https://www.adobe.com/support/flashplayer/downloads.html
 	static var fpDownload(default, never) = switch (systemName()) {
 		case "Linux":
-			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/11/flashplayer_11_sa_debug.i386.tar.gz";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flash_player_sa_linux_debug.x86_64.tar.gz";
 		case "Mac":
-			"https://fpdownload.macromedia.com/pub/flashplayer/updaters/21/flashplayer_21_sa_debug.dmg";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flashplayer_25_sa_debug.dmg";
 		case "Windows":
-			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/21/flashplayer_21_sa_debug.exe";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flashplayer_25_sa_debug.exe";
 		case _:
 			throw "unsupported system";
 	}
