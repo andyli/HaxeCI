@@ -10,7 +10,7 @@ os:
 # https://docs.travis-ci.com/user/osx-ci-environment/
 osx_image: xcode6.4
 
-# Let's use Ubuntu Trusty instead of Precise, which reached its EOL on April 28, 2017.
+# Let's use Ubuntu Trusty instead of Precise.
 dist: trusty
 
 # Test with Haxe 3.4.2 and Haxe development.
