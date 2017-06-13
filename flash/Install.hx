@@ -87,7 +87,7 @@ class Install {
 					if (command("sudo", ["chmod", "a+rw", dir]) != 0)
 						throw 'cannot set permission of $dir';
 				case _:
-					neko.Lib.rethrow(e);
+					throw 'cannot create $dir: $e';
 			}
 		}
 	}
