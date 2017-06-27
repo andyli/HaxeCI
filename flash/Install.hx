@@ -1,4 +1,5 @@
 import Sys.*;
+import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.*;
 import haxe.io.*;
@@ -7,11 +8,11 @@ class Install {
 	// https://www.adobe.com/support/flashplayer/downloads.html
 	static var fpDownload(default, never) = switch (systemName()) {
 		case "Linux":
-			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flash_player_sa_linux_debug.x86_64.tar.gz";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/26/flash_player_sa_linux_debug.x86_64.tar.gz";
 		case "Mac":
-			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flashplayer_25_sa_debug.dmg";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/26/flashplayer_26_sa_debug.dmg";
 		case "Windows":
-			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/25/flashplayer_25_sa_debug.exe";
+			"http://fpdownload.macromedia.com/pub/flashplayer/updaters/26/flashplayer_26_sa_debug.exe";
 		case _:
 			throw "unsupported system";
 	}
@@ -45,6 +46,7 @@ class Install {
 					throw "failed to download flash player";
 				if (command("tar", ["-xf", Path.withoutDirectory(fpDownload), "-C", "flash"]) != 0)
 					throw "failed to extract flash player";
+				deleteFile(Path.withoutDirectory(fpDownload));
 			case "Mac":
 				// https://github.com/caskroom/homebrew-cask/pull/15381
 				if (command("brew", ["uninstall", "--force", "brew-cask"]) != 0)
