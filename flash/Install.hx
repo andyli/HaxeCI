@@ -48,11 +48,6 @@ class Install {
 					throw "failed to extract flash player";
 				deleteFile(Path.withoutDirectory(fpDownload));
 			case "Mac":
-				// https://github.com/caskroom/homebrew-cask/pull/15381
-				if (command("brew", ["uninstall", "--force", "brew-cask"]) != 0)
-					throw "failed to brew uninstall --force brew-cask";
-				if (command("brew", ["tap", "caskroom/versions"]) != 0)
-					throw "failed to brew tap caskroom/versions";
 				if (command("brew", ["cask", "install", "flash-player-debugger"]) != 0)
 					throw "failed to install flash-player-debugger";
 			case "Windows":
