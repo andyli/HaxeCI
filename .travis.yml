@@ -13,9 +13,9 @@ osx_image: xcode6.4
 # Let's use Ubuntu Trusty instead of Precise, which reached its EOL on April 28, 2017.
 dist: trusty
 
-# Test with Haxe 3.4.2 and Haxe development.
+# Test with Haxe 3.4.3 and Haxe development.
 haxe:
-  - "3.4.2"
+  - "3.4.3"
   - development
 
 matrix:
