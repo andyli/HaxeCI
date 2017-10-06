@@ -18,6 +18,10 @@ install:
   - ps: Set-Service wuauserv -StartupType Manual
   - cinst php -y
   - RefreshEnv
+  # Install lua using hererocks
+  - pip install hererocks
+  - hererocks luaenv --lua 5.3 -rlatest
+  - call luaenv\bin\activate
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
   # Install project dependencies
@@ -44,3 +48,4 @@ test_script:
   - haxe build-flash.hxml -D fdb && haxe flash\run.hxml bin\HelloWorld.swf
   - haxe build-cpp.hxml          && bin\HelloWorld.exe
   - haxe build-python.hxml       && C:\Python34-x64\python.exe bin/HelloWorld.py
+  - haxe build-lua.hxml          && lua bin/HelloWorld.lua
