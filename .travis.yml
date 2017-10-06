@@ -6,9 +6,9 @@ os:
   - linux
   - osx
 
-# Let's use OSX 10.10, which is the oldest version that homebrew provides bottles for.
+# Let's use a more recent XCode, which generally compiles C/C++ faster
 # https://docs.travis-ci.com/user/osx-ci-environment/
-osx_image: xcode6.4
+osx_image: xcode9.1
 
 # Let's use Ubuntu Trusty instead of Precise, which reached its EOL on April 28, 2017.
 dist: trusty
