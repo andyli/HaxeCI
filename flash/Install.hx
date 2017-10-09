@@ -34,7 +34,7 @@ class Install {
 		case "Mac":
 			"/Library/Application Support/Macromedia/FlashPlayerTrust";
 		case "Windows":
-			Path.join([getEnv("SYSTEMROOT"), "system32", "Macromed", "Flash", "FlashPlayerTrust"]);
+			Path.join([getEnv("APPDATA"), "Macromedia", "Flash Player", "#Security", "FlashPlayerTrust"]);
 		case _:
 			throw "unsupported system";
 	}
