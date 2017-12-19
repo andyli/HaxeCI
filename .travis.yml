@@ -42,6 +42,7 @@ addons:
       - libglib2.0
       - libfreetype6
       # Lua
+      - cmake
       - luajit
       - luarocks
       - lua-sec
