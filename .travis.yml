@@ -6,10 +6,6 @@ os:
   - linux
   - osx
 
-# Let's use a more recent XCode, which generally compiles C/C++ faster
-# https://docs.travis-ci.com/user/osx-ci-environment/
-osx_image: xcode9.1
-
 # Let's use Ubuntu Trusty instead of Precise, which reached its EOL on April 28, 2017.
 dist: trusty
 
@@ -17,6 +13,8 @@ dist: trusty
 haxe:
   - "3.4.4"
   - development
+
+neko: "2.2.0"
 
 matrix:
   # Allow Haxe development to fail.
