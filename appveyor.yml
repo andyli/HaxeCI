@@ -5,8 +5,11 @@ environment:
     HAXELIB_ROOT: C:\projects\haxelib
 
 install:
-  # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
+  # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
+  - ps: Set-Service wuauserv -StartupType Manual
+  # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
   - cinst neko --version 2.2.0 -y
+  # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
   - cinst haxe --version 3.4.4 -y
   - RefreshEnv
   # Setup haxelib
@@ -15,8 +18,6 @@ install:
   # Install test dependencies
   - cinst phantomjs -y
   # Install php
-  # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
-  - ps: Set-Service wuauserv -StartupType Manual
   - cinst php -y
   - RefreshEnv
   # Install lua using hererocks
