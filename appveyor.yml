@@ -6,6 +6,7 @@ environment:
 
 install:
   # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
+  - cinst neko --version 2.2.0 -y
   - cinst haxe --version 3.4.4 -y
   - RefreshEnv
   # Setup haxelib
