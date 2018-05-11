@@ -59,7 +59,7 @@ install:
       brew install mono;
       brew install phantomjs;
       brew upgrade python;
-      brew tap homebrew/homebrew-php && brew install php71;
+      brew install php;
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
