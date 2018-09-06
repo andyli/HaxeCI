@@ -65,7 +65,7 @@ install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/lib/x86_64-linux-gnu;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-      brew install lua pcre python;
+      brew install lua luarocks pcre python;
       sudo luarocks install luabitop;
       sudo luarocks install luasocket;
       sudo luarocks install lrexlib-pcre;
