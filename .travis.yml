@@ -72,6 +72,7 @@ install:
     fi
   - sudo luarocks install luv
   - sudo luarocks install environ
+  - sudo luarocks install lua-utf8;
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
   # Install haxelibs
