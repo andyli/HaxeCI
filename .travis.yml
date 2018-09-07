@@ -62,6 +62,7 @@ install:
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      sudo luarocks install luasec;
       sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/lib/x86_64-linux-gnu;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew install lua luarocks pcre python;
