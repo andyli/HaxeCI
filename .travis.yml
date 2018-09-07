@@ -43,7 +43,6 @@ addons:
       - cmake
       - luajit
       - luarocks
-      - lua-sec
       - lua-bitop
       - lua-socket
       - libpcre3-dev
