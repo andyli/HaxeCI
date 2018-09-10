@@ -63,7 +63,7 @@ install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       sudo luarocks install luasec OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu;
       sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/usr/lib/x86_64-linux-gnu;
-      sudo luarocks install luabitop; # only needed when using lua5.1
+      sudo luarocks install luabitop;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew install lua luarocks pcre python;
       sudo luarocks install lrexlib-pcre;
