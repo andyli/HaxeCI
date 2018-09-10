@@ -40,11 +40,9 @@ addons:
       - libglib2.0
       - libfreetype6
       # Lua
-      - cmake
-      - luajit
+      - cmake3
+      - lua5.1
       - luarocks
-      - lua-bitop
-      - lua-socket
       - libpcre3-dev
 
 install:
@@ -62,14 +60,13 @@ install:
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      sudo luarocks install luasec;
       sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/lib/x86_64-linux-gnu;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew install lua luarocks pcre python;
-      sudo luarocks install luabitop;
-      sudo luarocks install luasocket;
       sudo luarocks install lrexlib-pcre;
     fi
+  - sudo luarocks install luabitop;
+  - sudo luarocks install luasocket;
   - sudo luarocks install luv
   - sudo luarocks install environ
   # Download and setup a standalone flash player debugger
