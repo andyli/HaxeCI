@@ -44,6 +44,7 @@ addons:
       - lua5.1
       - luarocks
       - libpcre3-dev
+      - libssl-dev
 
 install:
   # os-specific config
@@ -60,13 +61,14 @@ install:
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/lib/x86_64-linux-gnu;
+      sudo luarocks install luasec OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu;
+      sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/usr/lib/x86_64-linux-gnu;
+      sudo luarocks install luabitop; # only needed when using lua5.1
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew install lua luarocks pcre python;
       sudo luarocks install lrexlib-pcre;
+      sudo luarocks install luasocket;
     fi
-  - sudo luarocks install luabitop;
-  - sudo luarocks install luasocket;
   - sudo luarocks install luv
   - sudo luarocks install environ
   # Download and setup a standalone flash player debugger
