@@ -55,7 +55,7 @@ install:
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
       brew install mono;
-      brew install phantomjs;
+      brew cask install phantomjs;
       brew upgrade python;
       brew install php;
     fi
