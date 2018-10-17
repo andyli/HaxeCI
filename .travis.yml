@@ -57,7 +57,6 @@ install:
       brew install mono;
       brew cask install phantomjs;
       brew upgrade python;
-      brew install php;
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
