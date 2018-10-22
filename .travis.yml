@@ -54,8 +54,9 @@ install:
       phpenv global 7.0;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
-      brew install mono;
+      brew cask uninstall oclint;
       brew cask install phantomjs;
+      brew install mono;
       brew upgrade python;
     fi
   # Haxe Lua dependencies
