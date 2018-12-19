@@ -106,5 +106,5 @@ script:
   - haxe build-cs.hxml           && ( if [ "${TRAVIS_OS_NAME}" = "windows" ]; then bin/bin/HelloWorld.exe; else mono bin/bin/HelloWorld.exe; fi )
   - haxe build-flash.hxml -D fdb && haxe flash/run.hxml bin/HelloWorld.swf
   - haxe build-cpp.hxml          && ./bin/HelloWorld
-  - haxe build-python.hxml       && python3 bin/HelloWorld.py
+  - haxe build-python.hxml       && ( if [ "${TRAVIS_OS_NAME}" = "windows" ]; then python bin/HelloWorld.py; else python3 bin/HelloWorld.py; fi )
   - haxe build-lua.hxml          && lua bin/HelloWorld.lua
