@@ -32,7 +32,12 @@ class Install {
 		case "Mac":
 			"/Library/Application Support/Macromedia/mm.cfg";
 		case "Windows":
-			Path.join([getEnv("HOMEDRIVE") + getEnv("HOMEPATH"), "mm.cfg"]);
+			switch(getEnv("USERPROFILE")) {
+				case null:
+					Path.join([getEnv("HOMEDRIVE") + getEnv("HOMEPATH"), "mm.cfg"]);
+				case userprofile:
+					Path.join([userprofile, "mm.cfg"]);
+			}
 		case _:
 			throw "unsupported system";
 	}
