@@ -65,12 +65,21 @@ install:
       brew upgrade python;
       brew install lua pcre;
       brew install luarocks --HEAD;
+    elif [ "${TRAVIS_OS_NAME}" = "windows" ]; then
+      choco install nodejs --version 11.5.0 -y; export PATH="/c/Program Files/nodejs:$PATH";
+      choco install openjdk --version 11.0.1 -y; export PATH="/c/Program Files/OpenJDK/jdk-11.0.1/bin:$PATH";
+      choco install php --version 7.3.0 -y; export PATH="/c/tools/php73:$PATH";
+      choco install python --version 3.7.1 -y; export PATH="/c/Python37/Scripts:/c/Python37:$PATH";
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       sudo luarocks install haxe-deps;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       sudo luarocks install haxe-deps;
+    elif [ "${TRAVIS_OS_NAME}" = "windows" ]; then
+      pip install hererocks;
+      hererocks luaenv --lua 5.3 -rlatest;
+      export PATH="$(pwd)/luaenv/bin:$PATH";
     fi
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
