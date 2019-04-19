@@ -50,7 +50,8 @@ install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       export DISPLAY=:99.0;
       export AUDIODEV=null;
-      phpenv global 7.2;
+      phpenv versions;
+      phpenv global 7.1;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
       brew cask uninstall oclint;
