@@ -32,6 +32,8 @@ addons:
       - g++-multilib
       # Python
       - python3
+      # PHP
+      - php7.0-cli
       # C#
       - mono-devel
       - mono-mcs
