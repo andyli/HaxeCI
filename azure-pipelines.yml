@@ -6,15 +6,24 @@ stages:
           vmImage: 'ubuntu-latest'
         container: haxe:3.4.7
         steps:
-          - script: haxe build-neko.hxml
+          - script: |
+              haxe build-neko.hxml
+              haxe build-python.hxml
             displayName: 'Compile'
           - task: PublishPipelineArtifact@0
             inputs:
               artifactName: 'nekoOutput'
               targetPath: bin/HelloWorld.n
+          - task: PublishPipelineArtifact@0
+            inputs:
+              artifactName: 'pythonOutput'
+              targetPath: bin/HelloWorld.py
 
   - stage: Test
     jobs:
+
+      # Macro
+
       - job: TestMacro
         pool:
           vmImage: 'ubuntu-latest'
@@ -22,6 +31,8 @@ stages:
         steps:
           - script: haxe build-interp.hxml
             displayName: 'Test'
+
+      # Neko
 
       - job: TestNekoLinux
         pool:
@@ -61,4 +72,18 @@ stages:
               artifactName: 'nekoOutput'
               targetPath: bin
           - script: neko bin/HelloWorld.n
+            displayName: 'Test'
+
+      # Python
+
+      - job: TestPythonLinux
+        pool:
+          vmImage: 'ubuntu-latest'
+        container: python:3
+        steps:
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'pythonOutput'
+              targetPath: bin
+          - script: python3 bin/HelloWorld.py
             displayName: 'Test'
