@@ -18,24 +18,16 @@ stages:
       - job: TestMacro
         pool:
           vmImage: 'ubuntu-latest'
+        container: haxe:3.4.7
         steps:
-          - script: |
-              sudo add-apt-repository ppa:haxe/releases -y
-              sudo apt update -y
-              sudo apt install haxe -y
-            displayName: 'Install Haxe'
           - script: haxe build-interp.hxml
             displayName: 'Test'
 
       - job: TestNekoLinux
         pool:
           vmImage: 'ubuntu-latest'
+        container: haxe:3.4.7
         steps:
-          - script: |
-              sudo add-apt-repository ppa:haxe/releases -y
-              sudo apt update -y
-              sudo apt install neko -y
-            displayName: 'Install Neko'
           - task: DownloadPipelineArtifact@0
             inputs:
               artifactName: 'nekoOutput'
