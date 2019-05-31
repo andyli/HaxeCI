@@ -95,3 +95,32 @@ stages:
               python3 -V
               python3 bin/HelloWorld.py
             displayName: 'Test'
+
+      - job: TestPythonMac
+        pool:
+          vmImage: 'macOS-10.14'
+        steps:
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'pythonOutput'
+              targetPath: bin
+          - script: |
+              python3 -V
+              python3 bin/HelloWorld.py
+            displayName: 'Test'
+
+      - job: TestPythonWindows
+        pool:
+          vmImage: 'windows-2019'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.7'
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'pythonOutput'
+              targetPath: bin
+          - script: |
+              python -V
+              python bin/HelloWorld.py
+            displayName: 'Test'
