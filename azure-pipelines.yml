@@ -73,10 +73,11 @@ stages:
           vmImage: 'windows-2019'
         steps:
           - script: |
-              choco install haxe -y
-              RefreshEnv
+              choco install --no-progress haxe -y
+              echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
             displayName: 'Install Haxe'
           - script: |
+              echo %NEKOPATH%
               haxelib setup C:/haxelib
               haxelib install hxcpp > nul
               haxelib list
@@ -134,8 +135,8 @@ stages:
           vmImage: 'windows-2019'
         steps:
           - script: |
-              choco install neko -y
-              RefreshEnv
+              choco install --no-progress neko -y
+              echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
             displayName: 'Install Neko'
           - task: DownloadPipelineArtifact@0
             inputs:
@@ -232,5 +233,5 @@ stages:
             inputs:
               artifactName: 'cppWindowsOutput'
               targetPath: bin
-          - script: bin/HelloWorld.exe
+          - script: bin\HelloWorld.exe
             displayName: 'Test'
