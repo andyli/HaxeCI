@@ -1,6 +1,9 @@
 stages:
   - stage: Build
     jobs:
+
+      # Neko, Python
+
       - job: Build
         pool:
           vmImage: 'ubuntu-latest'
@@ -18,6 +21,9 @@ stages:
             inputs:
               artifactName: 'pythonOutput'
               targetPath: bin/HelloWorld.py
+
+      # Cpp
+
       - job: BuildCppLinux
         pool:
           vmImage: 'ubuntu-latest'
@@ -39,6 +45,27 @@ stages:
           - task: PublishPipelineArtifact@0
             inputs:
               artifactName: 'cppLinuxOutput'
+              targetPath: bin.tar.gz
+
+      - job: BuildCppMac
+        pool:
+          vmImage: 'macOS-10.14'
+        steps:
+          - script: |
+              brew install haxe
+            displayName: 'Install Haxe'
+          - script: |
+              haxelib setup ~/haxelib
+              haxelib install hxcpp > /dev/null
+              haxelib list
+            displayName: 'Install haxelibs'
+          - script: haxe build-cpp.hxml
+            displayName: 'Compile'
+          - script: tar -czf bin.tar.gz bin
+            displayName: 'Archive'
+          - task: PublishPipelineArtifact@0
+            inputs:
+              artifactName: 'cppMacOutput'
               targetPath: bin.tar.gz
 
   - stage: Test
@@ -157,6 +184,19 @@ stages:
           - task: DownloadPipelineArtifact@0
             inputs:
               artifactName: 'cppLinuxOutput'
+              targetPath: bin
+          - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
+            displayName: 'Extract'
+          - script: ./bin/HelloWorld
+            displayName: 'Test'
+
+      - job: TestCppMac
+        pool:
+          vmImage: 'macOS-10.14'
+        steps:
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'cppMacOutput'
               targetPath: bin
           - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
             displayName: 'Extract'
