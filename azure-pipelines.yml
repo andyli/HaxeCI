@@ -79,7 +79,13 @@ stages:
       - job: TestPythonLinux
         pool:
           vmImage: 'ubuntu-latest'
-        container: python:3
+        strategy:
+          matrix:
+            python36:
+              container: python:3.6
+            python37:
+              container: python:3.7
+        container: $[ variables['container'] ]
         steps:
           - task: DownloadPipelineArtifact@0
             inputs:
