@@ -91,5 +91,7 @@ stages:
             inputs:
               artifactName: 'pythonOutput'
               targetPath: bin
-          - script: python3 bin/HelloWorld.py
+          - script: |
+              python3 -V
+              python3 bin/HelloWorld.py
             displayName: 'Test'
