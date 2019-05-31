@@ -48,6 +48,20 @@ stages:
           - script: neko bin/HelloWorld.n
             displayName: 'Test'
 
+      - job: TestNekoMac
+        pool:
+          vmImage: 'macOS-10.14'
+        steps:
+          - script: |
+              brew install neko
+            displayName: 'Install Neko'
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'nekoOutput'
+              targetPath: bin
+          - script: neko bin/HelloWorld.n
+            displayName: 'Test'
+
       - job: TestNekoWindows
         pool:
           vmImage: 'windows-2019'
