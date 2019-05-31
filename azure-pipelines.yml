@@ -68,6 +68,25 @@ stages:
               artifactName: 'cppMacOutput'
               targetPath: bin.tar.gz
 
+      - job: BuildCppWindows
+        pool:
+          vmImage: 'windows-2019'
+        steps:
+          - script: |
+              choco install haxe -y
+            displayName: 'Install Haxe'
+          - script: |
+              haxelib setup C:/haxelib
+              haxelib install hxcpp > nul
+              haxelib list
+            displayName: 'Install haxelibs'
+          - script: haxe build-cpp.hxml
+            displayName: 'Compile'
+          - task: PublishPipelineArtifact@0
+            inputs:
+              artifactName: 'cppWindowsOutput'
+              targetPath: bin
+
   - stage: Test
     jobs:
 
@@ -201,4 +220,15 @@ stages:
           - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
             displayName: 'Extract'
           - script: ./bin/HelloWorld
+            displayName: 'Test'
+
+      - job: TestCppWindows
+        pool:
+          vmImage: 'windows-2019'
+        steps:
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'cppWindowsOutput'
+              targetPath: bin
+          - script: bin/HelloWorld.exe
             displayName: 'Test'
