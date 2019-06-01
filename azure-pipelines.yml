@@ -51,6 +51,28 @@ jobs:
           artifactName: 'javaOutput'
           targetPath: bin
 
+  # CSharp
+
+  - job: BuildCSharp
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - script: |
+          choco install --no-progress haxe -y
+          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+        displayName: 'Install Haxe'
+      - script: |
+          haxelib setup C:/haxelib
+          haxelib install hxcs > nul
+          haxelib list
+        displayName: 'Install haxelibs'
+      - script: haxe build-cs.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+
   # Python
 
   - job: BuildPython
@@ -305,6 +327,52 @@ jobs:
       - script: |
           java -version 2>&1
           java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
+  # CSharp
+
+  - job: TestCSharpLinux
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: mono:latest
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: |
+          mono --version
+          mono bin/bin/HelloWorld.exe
+        displayName: 'Test'
+
+  - job: TestCSharpMac
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: |
+          mono --version
+          mono bin/bin/HelloWorld.exe
+        displayName: 'Test'
+
+  - job: TestCSharpWindows
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: bin\bin\HelloWorld.exe
         displayName: 'Test'
 
   # Python
