@@ -14,6 +14,20 @@ jobs:
           artifactName: 'nekoOutput'
           targetPath: bin/HelloWorld.n
 
+  # JS
+
+  - job: BuildJS
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-js.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin/HelloWorld.js
+
   # Python
 
   - job: BuildPython
@@ -166,6 +180,60 @@ jobs:
           artifactName: 'nekoOutput'
           targetPath: bin
       - script: neko bin/HelloWorld.n
+        displayName: 'Test'
+
+  # JS
+
+  - job: TestJSLinux
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        node10:
+          container: node:10
+        node8:
+          container: node:8
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
+        displayName: 'Test'
+
+  - job: TestJSMac
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
+        displayName: 'Test'
+
+  - job: TestJSWindows
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
         displayName: 'Test'
 
   # Python
