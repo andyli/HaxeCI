@@ -165,6 +165,19 @@ jobs:
           artifactName: 'cppWindowsOutput'
           targetPath: bin
 
+  # Lua
+
+  - job: BuildLua
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-lua.hxml
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'luaOutput'
+          targetPath: bin/HelloWorld.lua
+
   # Flash
 
   - job: BuildFlash
@@ -594,4 +607,76 @@ jobs:
           artifactName: 'flashOutput'
           targetPath: bin
       - script: haxe flash/run.hxml bin/HelloWorld.swf
+        displayName: 'Test'
+
+  # Lua
+
+  - job: TestLuaLinux
+    dependsOn: BuildLua
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - checkout: none
+      - script: |
+          set -ex
+          sudo apt update -y
+          sudo apt install -y lua5.1 luarocks libpcre3-dev libssl-dev
+          sudo luarocks install luasec OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu
+          sudo luarocks install lrexlib-pcre PCRE_LIBDIR=/usr/lib/x86_64-linux-gnu
+          sudo luarocks install luabitop
+          sudo luarocks install luv
+          sudo luarocks install environ
+          sudo luarocks install luautf8
+        displayName: 'Install Lua and LuaRocks'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'luaOutput'
+          targetPath: bin
+      - script: |
+          lua -v
+          lua bin/HelloWorld.lua
+        displayName: 'Test'
+
+  - job: TestLuaMac
+    dependsOn: BuildLua
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - script: |
+          set -ex
+          brew install lua luarocks pcre python
+          sudo luarocks install lrexlib-pcre
+          sudo luarocks install luasocket
+          sudo luarocks install luv
+          sudo luarocks install environ
+          sudo luarocks install luautf8
+        displayName: 'Install Lua and LuaRocks'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'luaOutput'
+          targetPath: bin
+      - script: |
+          lua -v
+          lua bin/HelloWorld.lua
+        displayName: 'Test'
+
+  - job: TestLuaWindows
+    dependsOn: BuildLua
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - script: |
+          pip install hererocks
+          hererocks luaenv --lua 5.3 -rlatest
+        displayName: 'Install Lua'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'luaOutput'
+          targetPath: bin
+      - script: |
+          call luaenv\bin\activate
+          lua -v
+          lua bin/HelloWorld.lua
         displayName: 'Test'
