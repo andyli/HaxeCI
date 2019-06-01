@@ -1,5 +1,15 @@
 jobs:
 
+  # Macro
+
+  - job: TestMacro
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-interp.hxml
+        displayName: 'Test'
+
   # Neko
 
   - job: BuildNeko
@@ -14,6 +24,52 @@ jobs:
           artifactName: 'nekoOutput'
           targetPath: bin/HelloWorld.n
 
+  - job: TestNekoLinux
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container: haxe:3.4.7
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
+
+  - job: TestNekoMac
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - script: brew install neko
+        displayName: 'Install Neko'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
+
+  - job: TestNekoWindows
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - script: |
+          choco install --no-progress neko -y
+          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+        displayName: 'Install Neko'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
+
   # JS
 
   - job: BuildJS
@@ -27,6 +83,58 @@ jobs:
         inputs:
           artifactName: 'jsOutput'
           targetPath: bin/HelloWorld.js
+
+  - job: TestJSLinux
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        node10:
+          container: node:10
+        node8:
+          container: node:8
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
+        displayName: 'Test'
+
+  - job: TestJSMac
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
+        displayName: 'Test'
+
+  - job: TestJSWindows
+    dependsOn: BuildJS
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'jsOutput'
+          targetPath: bin
+      - script: |
+          node --version
+          node bin/HelloWorld.js
+        displayName: 'Test'
 
   # Java
 
@@ -51,6 +159,52 @@ jobs:
           artifactName: 'javaOutput'
           targetPath: bin
 
+  - job: TestJavaLinux
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container: openjdk:8-jre
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version
+          java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
+  - job: TestJavaMac
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version
+          java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
+  - job: TestJavaWindows
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version 2>&1
+          java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
   # CSharp
 
   - job: BuildCSharp
@@ -73,6 +227,50 @@ jobs:
           artifactName: 'csharpOutput'
           targetPath: bin
 
+  - job: TestCSharpLinux
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container: mono:latest
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: |
+          mono --version
+          mono bin/bin/HelloWorld.exe
+        displayName: 'Test'
+
+  - job: TestCSharpMac
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: |
+          mono --version
+          mono bin/bin/HelloWorld.exe
+        displayName: 'Test'
+
+  - job: TestCSharpWindows
+    dependsOn: BuildCSharp
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'csharpOutput'
+          targetPath: bin
+      - script: bin\bin\HelloWorld.exe
+        displayName: 'Test'
+
   # Python
 
   - job: BuildPython
@@ -87,6 +285,61 @@ jobs:
           artifactName: 'pythonOutput'
           targetPath: bin/HelloWorld.py
 
+  - job: TestPythonLinux
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        python37:
+          container: python:3.7
+        python36:
+          container: python:3.6
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python3 -V
+          python3 bin/HelloWorld.py
+        displayName: 'Test'
+
+  - job: TestPythonMac
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python3 -V
+          python3 bin/HelloWorld.py
+        displayName: 'Test'
+
+  - job: TestPythonWindows
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.7'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python -V
+          python bin/HelloWorld.py
+        displayName: 'Test'
+
   # PHP
 
   - job: BuildPHP
@@ -99,6 +352,58 @@ jobs:
         inputs:
           artifactName: 'phpOutput'
           targetPath: bin
+
+  - job: TestPHPLinux
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'ubuntu-16.04'
+    strategy:
+      matrix:
+        php73:
+          container: php:7.3
+        php72:
+          container: php:7.2
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
+
+  - job: TestPHPMac
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
+
+  - job: TestPHPWindows
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
 
   # Cpp
 
@@ -165,353 +470,6 @@ jobs:
           artifactName: 'cppWindowsOutput'
           targetPath: bin
 
-  # Lua
-
-  - job: BuildLua
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
-    steps:
-      - script: haxe build-lua.hxml
-      - task: PublishPipelineArtifact@0
-        inputs:
-          artifactName: 'luaOutput'
-          targetPath: bin/HelloWorld.lua
-
-  # Flash
-
-  - job: BuildFlash
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
-    steps:
-      - script: haxe build-flash.hxml -D fdb
-      - task: PublishPipelineArtifact@0
-        inputs:
-          artifactName: 'flashOutput'
-          targetPath: bin/HelloWorld.swf
-
-  # Test jobs
-
-  # Macro
-
-  - job: TestMacro
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
-    steps:
-      - script: haxe build-interp.hxml
-        displayName: 'Test'
-
-  # Neko
-
-  - job: TestNekoLinux
-    dependsOn: BuildNeko
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'nekoOutput'
-          targetPath: bin
-      - script: neko bin/HelloWorld.n
-        displayName: 'Test'
-
-  - job: TestNekoMac
-    dependsOn: BuildNeko
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - script: brew install neko
-        displayName: 'Install Neko'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'nekoOutput'
-          targetPath: bin
-      - script: neko bin/HelloWorld.n
-        displayName: 'Test'
-
-  - job: TestNekoWindows
-    dependsOn: BuildNeko
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - script: |
-          choco install --no-progress neko -y
-          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
-        displayName: 'Install Neko'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'nekoOutput'
-          targetPath: bin
-      - script: neko bin/HelloWorld.n
-        displayName: 'Test'
-
-  # JS
-
-  - job: TestJSLinux
-    dependsOn: BuildJS
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      matrix:
-        node10:
-          container: node:10
-        node8:
-          container: node:8
-    container: $[ variables['container'] ]
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'jsOutput'
-          targetPath: bin
-      - script: |
-          node --version
-          node bin/HelloWorld.js
-        displayName: 'Test'
-
-  - job: TestJSMac
-    dependsOn: BuildJS
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'jsOutput'
-          targetPath: bin
-      - script: |
-          node --version
-          node bin/HelloWorld.js
-        displayName: 'Test'
-
-  - job: TestJSWindows
-    dependsOn: BuildJS
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'jsOutput'
-          targetPath: bin
-      - script: |
-          node --version
-          node bin/HelloWorld.js
-        displayName: 'Test'
-
-  # Java
-
-  - job: TestJavaLinux
-    dependsOn: BuildJava
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: openjdk:8-jre
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'javaOutput'
-          targetPath: bin
-      - script: |
-          java -version
-          java -jar bin/HelloWorld.jar
-        displayName: 'Test'
-
-  - job: TestJavaMac
-    dependsOn: BuildJava
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'javaOutput'
-          targetPath: bin
-      - script: |
-          java -version
-          java -jar bin/HelloWorld.jar
-        displayName: 'Test'
-
-  - job: TestJavaWindows
-    dependsOn: BuildJava
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'javaOutput'
-          targetPath: bin
-      - script: |
-          java -version 2>&1
-          java -jar bin/HelloWorld.jar
-        displayName: 'Test'
-
-  # CSharp
-
-  - job: TestCSharpLinux
-    dependsOn: BuildCSharp
-    pool:
-      vmImage: 'ubuntu-16.04'
-    container: mono:latest
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'csharpOutput'
-          targetPath: bin
-      - script: |
-          mono --version
-          mono bin/bin/HelloWorld.exe
-        displayName: 'Test'
-
-  - job: TestCSharpMac
-    dependsOn: BuildCSharp
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'csharpOutput'
-          targetPath: bin
-      - script: |
-          mono --version
-          mono bin/bin/HelloWorld.exe
-        displayName: 'Test'
-
-  - job: TestCSharpWindows
-    dependsOn: BuildCSharp
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'csharpOutput'
-          targetPath: bin
-      - script: bin\bin\HelloWorld.exe
-        displayName: 'Test'
-
-  # Python
-
-  - job: TestPythonLinux
-    dependsOn: BuildPython
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      matrix:
-        python37:
-          container: python:3.7
-        python36:
-          container: python:3.6
-    container: $[ variables['container'] ]
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'pythonOutput'
-          targetPath: bin
-      - script: |
-          python3 -V
-          python3 bin/HelloWorld.py
-        displayName: 'Test'
-
-  - job: TestPythonMac
-    dependsOn: BuildPython
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'pythonOutput'
-          targetPath: bin
-      - script: |
-          python3 -V
-          python3 bin/HelloWorld.py
-        displayName: 'Test'
-
-  - job: TestPythonWindows
-    dependsOn: BuildPython
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: '3.7'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'pythonOutput'
-          targetPath: bin
-      - script: |
-          python -V
-          python bin/HelloWorld.py
-        displayName: 'Test'
-
-  # PHP
-
-  - job: TestPHPLinux
-    dependsOn: BuildPHP
-    pool:
-      vmImage: 'ubuntu-16.04'
-    strategy:
-      matrix:
-        php73:
-          container: php:7.3
-        php72:
-          container: php:7.2
-    container: $[ variables['container'] ]
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'phpOutput'
-          targetPath: bin
-      - script: |
-          php --version
-          php bin/index.php
-        displayName: 'Test'
-
-  - job: TestPHPMac
-    dependsOn: BuildPHP
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'phpOutput'
-          targetPath: bin
-      - script: |
-          php --version
-          php bin/index.php
-        displayName: 'Test'
-
-  - job: TestPHPWindows
-    dependsOn: BuildPHP
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'phpOutput'
-          targetPath: bin
-      - script: |
-          php --version
-          php bin/index.php
-        displayName: 'Test'
-
-  # Cpp
-
   - job: TestCppLinux
     dependsOn: BuildCppLinux
     pool:
@@ -556,60 +514,18 @@ jobs:
       - script: bin\HelloWorld.exe
         displayName: 'Test'
 
-  # Flash
+  # Lua
 
-  - job: TestFlashLinux
-    dependsOn: BuildFlash
+  - job: BuildLua
     pool:
       vmImage: 'ubuntu-16.04'
+    container: haxe:3.4.7
     steps:
-      - script: |
-          sudo add-apt-repository ppa:haxe/releases -y
-          sudo apt update -y
-          sudo apt install haxe -y
-        displayName: 'Install Haxe'
-      - script: haxe flash/install.hxml
-        displayName: 'Install Flash Player Debugger'
-      - task: DownloadPipelineArtifact@0
+      - script: haxe build-lua.hxml
+      - task: PublishPipelineArtifact@0
         inputs:
-          artifactName: 'flashOutput'
-          targetPath: bin
-      - script: haxe flash/run.hxml bin/HelloWorld.swf
-        displayName: 'Test'
-
-  - job: TestFlashMac
-    dependsOn: BuildFlash
-    pool:
-      vmImage: 'macOS-10.14'
-    steps:
-      - script: brew install haxe
-        displayName: 'Install Haxe'
-      - script: haxe flash/install.hxml
-        displayName: 'Install Flash Player Debugger'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'flashOutput'
-          targetPath: bin
-      - script: haxe flash/run.hxml bin/HelloWorld.swf
-        displayName: 'Test'
-
-  - job: TestFlashWindows
-    dependsOn: BuildFlash
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - script: choco install --no-progress haxe -y
-        displayName: 'Install Haxe'
-      - script: haxe flash/install.hxml
-        displayName: 'Install Flash Player Debugger'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'flashOutput'
-          targetPath: bin
-      - script: haxe flash/run.hxml bin/HelloWorld.swf
-        displayName: 'Test'
-
-  # Lua
+          artifactName: 'luaOutput'
+          targetPath: bin/HelloWorld.lua
 
   - job: TestLuaLinux
     dependsOn: BuildLua
@@ -679,4 +595,70 @@ jobs:
           call luaenv\bin\activate
           lua -v
           lua bin/HelloWorld.lua
+        displayName: 'Test'
+
+  # Flash
+
+  - job: BuildFlash
+    pool:
+      vmImage: 'ubuntu-16.04'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-flash.hxml -D fdb
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin/HelloWorld.swf
+
+  # Flash
+
+  - job: TestFlashLinux
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+      - script: |
+          sudo add-apt-repository ppa:haxe/releases -y
+          sudo apt update -y
+          sudo apt install haxe -y
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
+        displayName: 'Test'
+
+  - job: TestFlashMac
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - script: brew install haxe
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
+        displayName: 'Test'
+
+  - job: TestFlashWindows
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - script: choco install --no-progress haxe -y
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
         displayName: 'Test'
