@@ -303,7 +303,7 @@ jobs:
           artifactName: 'javaOutput'
           targetPath: bin
       - script: |
-          java -version
+          java -version 2>&1
           java -jar bin/HelloWorld.jar
         displayName: 'Test'
 
