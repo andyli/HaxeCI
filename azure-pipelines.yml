@@ -22,6 +22,19 @@ stages:
               artifactName: 'pythonOutput'
               targetPath: bin/HelloWorld.py
 
+      # PHP
+
+      - job: BuildPHP
+        pool:
+          vmImage: 'ubuntu-latest'
+        container: haxe:3.4.7
+        steps:
+          - script: haxe build-php.hxml
+          - task: PublishPipelineArtifact@0
+            inputs:
+              artifactName: 'phpOutput'
+              targetPath: bin
+
       # Cpp
 
       - job: BuildCppLinux
@@ -199,6 +212,57 @@ stages:
           - script: |
               python -V
               python bin/HelloWorld.py
+            displayName: 'Test'
+
+      # PHP
+
+      - job: TestPHPLinux
+        pool:
+          vmImage: 'ubuntu-latest'
+        strategy:
+          matrix:
+            php73:
+              container: php:7.3
+            php72:
+              container: php:7.2
+        container: $[ variables['container'] ]
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'phpOutput'
+              targetPath: bin
+          - script: |
+              php --version
+              php bin/index.php
+            displayName: 'Test'
+
+      - job: TestPHPMac
+        pool:
+          vmImage: 'macOS-10.14'
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'phpOutput'
+              targetPath: bin
+          - script: |
+              php --version
+              php bin/index.php
+            displayName: 'Test'
+
+      - job: TestPHPWindows
+        pool:
+          vmImage: 'windows-2019'
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@0
+            inputs:
+              artifactName: 'phpOutput'
+              targetPath: bin
+          - script: |
+              php --version
+              php bin/index.php
             displayName: 'Test'
 
       # Cpp
