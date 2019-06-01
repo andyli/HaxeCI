@@ -28,6 +28,29 @@ jobs:
           artifactName: 'jsOutput'
           targetPath: bin/HelloWorld.js
 
+  # Java
+
+  - job: BuildJava
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: |
+          sudo add-apt-repository ppa:haxe/releases -y
+          sudo apt update -y
+          sudo apt install haxe -y
+        displayName: 'Install Haxe'
+      - script: |
+          haxelib setup ~/haxelib
+          haxelib install hxjava > /dev/null
+          haxelib list
+        displayName: 'Install haxelibs'
+      - script: haxe build-java.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+
   # Python
 
   - job: BuildPython
@@ -234,6 +257,54 @@ jobs:
       - script: |
           node --version
           node bin/HelloWorld.js
+        displayName: 'Test'
+
+  # Java
+
+  - job: TestJavaLinux
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: openjdk:8-jre
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version
+          java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
+  - job: TestJavaMac
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version
+          java -jar bin/HelloWorld.jar
+        displayName: 'Test'
+
+  - job: TestJavaWindows
+    dependsOn: BuildJava
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'javaOutput'
+          targetPath: bin
+      - script: |
+          java -version
+          java -jar bin/HelloWorld.jar
         displayName: 'Test'
 
   # Python
