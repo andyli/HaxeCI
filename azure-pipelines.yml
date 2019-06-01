@@ -1,309 +1,326 @@
-stages:
-  - stage: Build
-    jobs:
+jobs:
 
-      # Neko, Python
+  # Neko
 
-      - job: Build
-        pool:
-          vmImage: 'ubuntu-latest'
-        container: haxe:3.4.7
-        steps:
-          - script: |
-              haxe build-neko.hxml
-              haxe build-python.hxml
-            displayName: 'Compile'
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'nekoOutput'
-              targetPath: bin/HelloWorld.n
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'pythonOutput'
-              targetPath: bin/HelloWorld.py
+  - job: BuildNeko
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-neko.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin/HelloWorld.n
 
-      # PHP
+  # Python
 
-      - job: BuildPHP
-        pool:
-          vmImage: 'ubuntu-latest'
-        container: haxe:3.4.7
-        steps:
-          - script: haxe build-php.hxml
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'phpOutput'
-              targetPath: bin
+  - job: BuildPython
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-python.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin/HelloWorld.py
 
-      # Cpp
+  # PHP
 
-      - job: BuildCppLinux
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - script: |
-              sudo add-apt-repository ppa:haxe/releases -y
-              sudo apt update -y
-              sudo apt install haxe -y
-            displayName: 'Install Haxe'
-          - script: |
-              haxelib setup ~/haxelib
-              haxelib install hxcpp > /dev/null
-              haxelib list
-            displayName: 'Install haxelibs'
-          - script: haxe build-cpp.hxml
-            displayName: 'Compile'
-          - script: tar -czf bin.tar.gz bin
-            displayName: 'Archive'
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'cppLinuxOutput'
-              targetPath: bin.tar.gz
+  - job: BuildPHP
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-php.hxml
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
 
-      - job: BuildCppMac
-        pool:
-          vmImage: 'macOS-10.14'
-        steps:
-          - script: |
-              brew install haxe
-            displayName: 'Install Haxe'
-          - script: |
-              haxelib setup ~/haxelib
-              haxelib install hxcpp > /dev/null
-              haxelib list
-            displayName: 'Install haxelibs'
-          - script: haxe build-cpp.hxml
-            displayName: 'Compile'
-          - script: tar -czf bin.tar.gz bin
-            displayName: 'Archive'
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'cppMacOutput'
-              targetPath: bin.tar.gz
+  # Cpp
 
-      - job: BuildCppWindows
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - script: |
-              choco install --no-progress haxe -y
-              echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
-            displayName: 'Install Haxe'
-          - script: |
-              haxelib setup C:/haxelib
-              haxelib install hxcpp > nul
-              haxelib list
-            displayName: 'Install haxelibs'
-          - script: haxe build-cpp.hxml
-            displayName: 'Compile'
-          - task: PublishPipelineArtifact@0
-            inputs:
-              artifactName: 'cppWindowsOutput'
-              targetPath: bin
+  - job: BuildCppLinux
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: |
+          sudo add-apt-repository ppa:haxe/releases -y
+          sudo apt update -y
+          sudo apt install haxe -y
+        displayName: 'Install Haxe'
+      - script: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib list
+        displayName: 'Install haxelibs'
+      - script: haxe build-cpp.hxml
+        displayName: 'Compile'
+      - script: tar -czf bin.tar.gz bin
+        displayName: 'Archive'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'cppLinuxOutput'
+          targetPath: bin.tar.gz
 
-  - stage: Test
-    jobs:
+  - job: BuildCppMac
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - script: |
+          brew install haxe
+        displayName: 'Install Haxe'
+      - script: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib list
+        displayName: 'Install haxelibs'
+      - script: haxe build-cpp.hxml
+        displayName: 'Compile'
+      - script: tar -czf bin.tar.gz bin
+        displayName: 'Archive'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'cppMacOutput'
+          targetPath: bin.tar.gz
 
-      # Macro
+  - job: BuildCppWindows
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - script: |
+          choco install --no-progress haxe -y
+          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+        displayName: 'Install Haxe'
+      - script: |
+          haxelib setup C:/haxelib
+          haxelib install hxcpp > nul
+          haxelib list
+        displayName: 'Install haxelibs'
+      - script: haxe build-cpp.hxml
+        displayName: 'Compile'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'cppWindowsOutput'
+          targetPath: bin
 
-      - job: TestMacro
-        pool:
-          vmImage: 'ubuntu-latest'
-        container: haxe:3.4.7
-        steps:
-          - script: haxe build-interp.hxml
-            displayName: 'Test'
+  # Test jobs
 
-      # Neko
+  # Macro
 
-      - job: TestNekoLinux
-        pool:
-          vmImage: 'ubuntu-latest'
-        container: haxe:3.4.7
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'nekoOutput'
-              targetPath: bin
-          - script: neko bin/HelloWorld.n
-            displayName: 'Test'
+  - job: TestMacro
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-interp.hxml
+        displayName: 'Test'
 
-      - job: TestNekoMac
-        pool:
-          vmImage: 'macOS-10.14'
-        steps:
-          - checkout: none
-          - script: |
-              brew install neko
-            displayName: 'Install Neko'
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'nekoOutput'
-              targetPath: bin
-          - script: neko bin/HelloWorld.n
-            displayName: 'Test'
+  # Neko
 
-      - job: TestNekoWindows
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - checkout: none
-          - script: |
-              choco install --no-progress neko -y
-              echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
-            displayName: 'Install Neko'
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'nekoOutput'
-              targetPath: bin
-          - script: neko bin/HelloWorld.n
-            displayName: 'Test'
+  - job: TestNekoLinux
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
 
-      # Python
+  - job: TestNekoMac
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - script: |
+          brew install neko
+        displayName: 'Install Neko'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
 
-      - job: TestPythonLinux
-        pool:
-          vmImage: 'ubuntu-latest'
-        strategy:
-          matrix:
-            python36:
-              container: python:3.6
-            python37:
-              container: python:3.7
-        container: $[ variables['container'] ]
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'pythonOutput'
-              targetPath: bin
-          - script: |
-              python3 -V
-              python3 bin/HelloWorld.py
-            displayName: 'Test'
+  - job: TestNekoWindows
+    dependsOn: BuildNeko
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - script: |
+          choco install --no-progress neko -y
+          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+        displayName: 'Install Neko'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'nekoOutput'
+          targetPath: bin
+      - script: neko bin/HelloWorld.n
+        displayName: 'Test'
 
-      - job: TestPythonMac
-        pool:
-          vmImage: 'macOS-10.14'
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'pythonOutput'
-              targetPath: bin
-          - script: |
-              python3 -V
-              python3 bin/HelloWorld.py
-            displayName: 'Test'
+  # Python
 
-      - job: TestPythonWindows
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - checkout: none
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.7'
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'pythonOutput'
-              targetPath: bin
-          - script: |
-              python -V
-              python bin/HelloWorld.py
-            displayName: 'Test'
+  - job: TestPythonLinux
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        python36:
+          container: python:3.6
+        python37:
+          container: python:3.7
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python3 -V
+          python3 bin/HelloWorld.py
+        displayName: 'Test'
 
-      # PHP
+  - job: TestPythonMac
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python3 -V
+          python3 bin/HelloWorld.py
+        displayName: 'Test'
 
-      - job: TestPHPLinux
-        pool:
-          vmImage: 'ubuntu-latest'
-        strategy:
-          matrix:
-            php73:
-              container: php:7.3
-            php72:
-              container: php:7.2
-        container: $[ variables['container'] ]
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'phpOutput'
-              targetPath: bin
-          - script: |
-              php --version
-              php bin/index.php
-            displayName: 'Test'
+  - job: TestPythonWindows
+    dependsOn: BuildPython
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.7'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'pythonOutput'
+          targetPath: bin
+      - script: |
+          python -V
+          python bin/HelloWorld.py
+        displayName: 'Test'
 
-      - job: TestPHPMac
-        pool:
-          vmImage: 'macOS-10.14'
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'phpOutput'
-              targetPath: bin
-          - script: |
-              php --version
-              php bin/index.php
-            displayName: 'Test'
+  # PHP
 
-      - job: TestPHPWindows
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'phpOutput'
-              targetPath: bin
-          - script: |
-              php --version
-              php bin/index.php
-            displayName: 'Test'
+  - job: TestPHPLinux
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        php73:
+          container: php:7.3
+        php72:
+          container: php:7.2
+    container: $[ variables['container'] ]
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
 
-      # Cpp
+  - job: TestPHPMac
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
 
-      - job: TestCppLinux
-        pool:
-          vmImage: 'ubuntu-latest'
-        container: debian:latest
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'cppLinuxOutput'
-              targetPath: bin
-          - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
-            displayName: 'Extract'
-          - script: ./bin/HelloWorld
-            displayName: 'Test'
+  - job: TestPHPWindows
+    dependsOn: BuildPHP
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'phpOutput'
+          targetPath: bin
+      - script: |
+          php --version
+          php bin/index.php
+        displayName: 'Test'
 
-      - job: TestCppMac
-        pool:
-          vmImage: 'macOS-10.14'
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'cppMacOutput'
-              targetPath: bin
-          - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
-            displayName: 'Extract'
-          - script: ./bin/HelloWorld
-            displayName: 'Test'
+  # Cpp
 
-      - job: TestCppWindows
-        pool:
-          vmImage: 'windows-2019'
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@0
-            inputs:
-              artifactName: 'cppWindowsOutput'
-              targetPath: bin
-          - script: bin\HelloWorld.exe
-            displayName: 'Test'
+  - job: TestCppLinux
+    dependsOn: BuildCppLinux
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: debian:latest
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'cppLinuxOutput'
+          targetPath: bin
+      - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
+        displayName: 'Extract'
+      - script: ./bin/HelloWorld
+        displayName: 'Test'
+
+  - job: TestCppMac
+    dependsOn: BuildCppMac
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'cppMacOutput'
+          targetPath: bin
+      - script: tar -xzf bin/bin.tar.gz && rm bin/bin.tar.gz
+        displayName: 'Extract'
+      - script: ./bin/HelloWorld
+        displayName: 'Test'
+
+  - job: TestCppWindows
+    dependsOn: BuildCppWindows
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'cppWindowsOutput'
+          targetPath: bin
+      - script: bin\HelloWorld.exe
+        displayName: 'Test'
