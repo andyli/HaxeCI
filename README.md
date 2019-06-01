@@ -2,21 +2,25 @@ An example of using CI for Haxe projects.
 
 [![TravisCI Build Status](https://travis-ci.com/andyli/HaxeCI.svg?branch=master)](https://travis-ci.com/andyli/HaxeCI)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/andyli/HaxeCI?branch=master&svg=true)](https://ci.appveyor.com/project/andyli/HaxeCI)
+[![Azure Pipelines Build Status](https://dev.azure.com/onthewings/GitHub%20public%20projects/_apis/build/status/andyli.HaxeCI?branchName=master)](https://dev.azure.com/onthewings/GitHub%20public%20projects/_build/latest?definitionId=2&branchName=master)
 
-Same procedure is used for setting up both [Travis CI](https://travis-ci.com/) and [AppVeyor](https://www.appveyor.com/):
+Same procedure is used for setting up both [Travis CI](https://travis-ci.com/), [AppVeyor](https://www.appveyor.com/), and [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/):
  1. Create a Haxe project if there isn't one.
- 2. Create a new repo on Github.
- 3. Turn on the switches for the Github repo on Travis CI/AppVeyor.
+ 2. Create a new repo on GitHub.
+ 3. Turn on the switches for the GitHub repo on Travis CI/AppVeyor/Azure Pipelines.
  4. Copy and modify the configs:
      * [.travis.yml](.travis.yml) for Travis CI
      * [appveyor.yml](appveyor.yml) for AppVeyor
- 5. Commit the configs and push to Github.
+     * [azure-pipelines.yml](azure-pipelines.yml) for Azure Pipelines
+ 5. Commit the configs and push to GitHub.
  6. Watch it build:
      * `https://travis-ci.com/${username}/${reponame}` for Travis CI
      * `https://ci.appveyor.com/project/${username}/${reponame}` for AppVeyor
+     * `https://dev.azure.com/${organization}/${azureproject}/_build` for Azure Pipelines
  7. Add badges to README:
      * `https://travis-ci.com/${username}/${reponame}.svg?branch=master` for Travis CI
      * `https://ci.appveyor.com/api/projects/status/github/${username}/${reponame}?branch=master&svg=true` for AppVeyor
+     * `https://dev.azure.com/${organization}/${azureproject}/_apis/build/status/${pipeline}?branchName=master` for Azure Pipelines
 
 <p xmlns:dct="http://purl.org/dc/terms/" xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
   <a rel="license"
