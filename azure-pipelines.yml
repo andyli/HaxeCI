@@ -176,10 +176,10 @@ jobs:
       vmImage: 'ubuntu-latest'
     strategy:
       matrix:
-        python36:
-          container: python:3.6
         python37:
           container: python:3.7
+        python36:
+          container: python:3.6
     container: $[ variables['container'] ]
     steps:
       - checkout: none
