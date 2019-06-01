@@ -129,8 +129,7 @@ jobs:
     pool:
       vmImage: 'macOS-10.14'
     steps:
-      - script: |
-          brew install haxe
+      - script: brew install haxe
         displayName: 'Install Haxe'
       - script: |
           haxelib setup ~/haxelib
@@ -166,6 +165,19 @@ jobs:
           artifactName: 'cppWindowsOutput'
           targetPath: bin
 
+  # Flash
+
+  - job: BuildFlash
+    pool:
+      vmImage: 'ubuntu-latest'
+    container: haxe:3.4.7
+    steps:
+      - script: haxe build-flash.hxml -D fdb
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin/HelloWorld.swf
+
   # Test jobs
 
   # Macro
@@ -200,8 +212,7 @@ jobs:
       vmImage: 'macOS-10.14'
     steps:
       - checkout: none
-      - script: |
-          brew install neko
+      - script: brew install neko
         displayName: 'Install Neko'
       - task: DownloadPipelineArtifact@0
         inputs:
@@ -530,4 +541,57 @@ jobs:
           artifactName: 'cppWindowsOutput'
           targetPath: bin
       - script: bin\HelloWorld.exe
+        displayName: 'Test'
+
+  # Flash
+
+  - job: TestFlashLinux
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - script: |
+          sudo add-apt-repository ppa:haxe/releases -y
+          sudo apt update -y
+          sudo apt install haxe -y
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
+        displayName: 'Test'
+
+  - job: TestFlashMac
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+      - script: brew install haxe
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
+        displayName: 'Test'
+
+  - job: TestFlashWindows
+    dependsOn: BuildFlash
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+      - script: choco install --no-progress haxe -y
+        displayName: 'Install Haxe'
+      - script: haxe flash/install.hxml
+        displayName: 'Install Flash Player Debugger'
+      - task: DownloadPipelineArtifact@0
+        inputs:
+          artifactName: 'flashOutput'
+          targetPath: bin
+      - script: haxe flash/run.hxml bin/HelloWorld.swf
         displayName: 'Test'
