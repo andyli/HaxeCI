@@ -8,7 +8,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-interp.hxml
         displayName: 'Test'
 
@@ -20,7 +20,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-neko.hxml
         displayName: 'Compile'
       - task: PublishPipelineArtifact@0
@@ -36,7 +36,7 @@ jobs:
       - checkout: none
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - task: DownloadPipelineArtifact@0
         inputs:
           artifactName: 'nekoOutput'
@@ -52,7 +52,7 @@ jobs:
       - checkout: none
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - task: DownloadPipelineArtifact@0
         inputs:
           artifactName: 'nekoOutput'
@@ -68,7 +68,7 @@ jobs:
       - checkout: none
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - task: DownloadPipelineArtifact@0
         inputs:
           artifactName: 'nekoOutput'
@@ -84,7 +84,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-js.hxml
         displayName: 'Compile'
       - task: PublishPipelineArtifact@0
@@ -152,7 +152,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: |
           haxelib setup ~/haxelib
           haxelib install hxjava > /dev/null
@@ -219,7 +219,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: |
           haxelib setup C:/haxelib
           haxelib install hxcs > nul
@@ -284,7 +284,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-python.hxml
         displayName: 'Compile'
       - task: PublishPipelineArtifact@0
@@ -355,7 +355,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-php.hxml
       - task: PublishPipelineArtifact@0
         inputs:
@@ -422,7 +422,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
@@ -443,7 +443,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
@@ -464,7 +464,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > nul
@@ -529,7 +529,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-lua.hxml
       - task: PublishPipelineArtifact@0
         inputs:
@@ -614,7 +614,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe build-flash.hxml -D fdb
       - task: PublishPipelineArtifact@0
         inputs:
@@ -630,7 +630,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe flash/install.hxml
         displayName: 'Install Flash Player Debugger'
       - task: DownloadPipelineArtifact@0
@@ -647,7 +647,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe flash/install.hxml
         displayName: 'Install Flash Player Debugger'
       - task: DownloadPipelineArtifact@0
@@ -664,7 +664,7 @@ jobs:
     steps:
       - task: UseHaxeVersion@0
         inputs:
-          versionSpec: '3.4.7'
+          versionSpec: '3.4.x'
       - script: haxe flash/install.hxml
         displayName: 'Install Flash Player Debugger'
       - task: DownloadPipelineArtifact@0
