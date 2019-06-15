@@ -63,6 +63,8 @@ class Install {
 					throw "failed to extract flash player";
 				deleteFile(Path.withoutDirectory(fpDownload));
 			case "Mac":
+				if (command("brew", ["update"]) != 0)
+					throw "failed to update homebrew";
 				if (command("brew", ["cask", "install", "flash-player-debugger"]) != 0)
 					throw "failed to install flash-player-debugger";
 			case "Windows":
