@@ -8,6 +8,9 @@ os:
 
 dist: xenial
 
+env:
+  - HOMEBREW_NO_INSTALL_CLEANUP=1
+
 # Test with Haxe 3.4.7 and Haxe development.
 haxe:
   - "3.4.7"
