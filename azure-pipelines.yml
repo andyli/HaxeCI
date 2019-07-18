@@ -561,7 +561,8 @@ jobs:
       - checkout: none
       - script: |
           set -ex
-          brew install lua luarocks pcre python
+          brew install lua pcre python
+          brew install https://raw.githubusercontent.com/andyli/homebrew-core/luarocks/Formula/luarocks.rb --HEAD # https://github.com/luarocks/luarocks/issues/1044
           sudo luarocks install lrexlib-pcre
           sudo luarocks install luasocket
           sudo luarocks install luv

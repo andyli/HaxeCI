@@ -62,14 +62,14 @@ install:
       brew cask install phantomjs;
       brew install mono;
       brew upgrade python;
-      brew install lua luarocks pcre;
+      brew install lua pcre;
+      brew install https://raw.githubusercontent.com/andyli/homebrew-core/luarocks/Formula/luarocks.rb --HEAD;
     fi
   # Haxe Lua dependencies
-  - luarocks config
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       sudo luarocks install haxe-deps;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-      sudo luarocks --lua-dir=/usr/local/opt/lua install haxe-deps;
+      sudo luarocks install haxe-deps;
     fi
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
