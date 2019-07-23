@@ -64,7 +64,7 @@ install:
       brew install mono;
       brew upgrade python;
       brew install lua pcre;
-      brew install https://raw.githubusercontent.com/andyli/homebrew-core/luarocks/Formula/luarocks.rb --HEAD;
+      brew install luarocks --HEAD;
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
