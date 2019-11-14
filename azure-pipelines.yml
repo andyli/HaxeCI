@@ -59,9 +59,10 @@ jobs:
       vmImage: 'windows-2019'
     steps:
       - checkout: none
-      - script: |
+      - powershell: |
           choco install --no-progress neko -y
-          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+          $nekoPath = (Get-ChildItem C:/ProgramData/chocolatey/lib/neko/*/neko.dll -Recurse).Directory
+          echo "##vso[task.setvariable variable=NEKOPATH]$nekoPath"
         displayName: 'Install Neko'
       - task: DownloadPipelineArtifact@0
         inputs:
@@ -211,9 +212,10 @@ jobs:
     pool:
       vmImage: 'windows-2019'
     steps:
-      - script: |
+      - powershell: |
           choco install --no-progress haxe -y
-          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+          $nekoPath = (Get-ChildItem C:/ProgramData/chocolatey/lib/neko/*/neko.dll -Recurse).Directory
+          echo "##vso[task.setvariable variable=NEKOPATH]$nekoPath"
         displayName: 'Install Haxe'
       - script: |
           haxelib setup C:/haxelib
@@ -454,9 +456,10 @@ jobs:
     pool:
       vmImage: 'windows-2019'
     steps:
-      - script: |
+      - powershell: |
           choco install --no-progress haxe -y
-          echo ##vso[task.setvariable variable=NEKOPATH]C:/ProgramData/chocolatey/lib/neko
+          $nekoPath = (Get-ChildItem C:/ProgramData/chocolatey/lib/neko/*/neko.dll -Recurse).Directory
+          echo "##vso[task.setvariable variable=NEKOPATH]$nekoPath"
         displayName: 'Install Haxe'
       - script: |
           haxelib setup C:/haxelib
@@ -654,7 +657,10 @@ jobs:
     pool:
       vmImage: 'windows-2019'
     steps:
-      - script: choco install --no-progress haxe -y
+      - powershell:
+          choco install --no-progress haxe -y
+          $nekoPath = (Get-ChildItem C:/ProgramData/chocolatey/lib/neko/*/neko.dll -Recurse).Directory
+          echo "##vso[task.setvariable variable=NEKOPATH]$nekoPath"
         displayName: 'Install Haxe'
       - script: haxe flash/install.hxml
         displayName: 'Install Flash Player Debugger'
