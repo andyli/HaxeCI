@@ -5,7 +5,7 @@ jobs:
   - job: TestMacro
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-interp.hxml
         displayName: 'Test'
@@ -15,7 +15,7 @@ jobs:
   - job: BuildNeko
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-neko.hxml
         displayName: 'Compile'
@@ -28,7 +28,7 @@ jobs:
     dependsOn: BuildNeko
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - checkout: none
       - task: DownloadPipelineArtifact@0
@@ -76,7 +76,7 @@ jobs:
   - job: BuildJS
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-js.hxml
         displayName: 'Compile'
@@ -278,7 +278,7 @@ jobs:
   - job: BuildPython
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-python.hxml
         displayName: 'Compile'
@@ -347,7 +347,7 @@ jobs:
   - job: BuildPHP
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-php.hxml
       - task: PublishPipelineArtifact@0
@@ -522,7 +522,7 @@ jobs:
   - job: BuildLua
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-lua.hxml
       - task: PublishPipelineArtifact@0
@@ -607,7 +607,7 @@ jobs:
   - job: BuildFlash
     pool:
       vmImage: 'ubuntu-16.04'
-    container: haxe:3.4.7
+    container: haxe:4.0.2
     steps:
       - script: haxe build-flash.hxml -D fdb
       - task: PublishPipelineArtifact@0

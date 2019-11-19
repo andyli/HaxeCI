@@ -8,9 +8,9 @@ install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
   - ps: Set-Service wuauserv -StartupType Manual
   # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
-  - cinst neko --version 2.2.0 -y
+  - cinst neko --version 2.3.0 -y
   # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
-  - cinst haxe --version 3.4.7 -y
+  - cinst haxe --version 4.0.2 -y
   - RefreshEnv
   # Setup haxelib
   - mkdir "%HAXELIB_ROOT%"
