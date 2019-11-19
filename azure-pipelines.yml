@@ -582,26 +582,6 @@ jobs:
           lua bin/HelloWorld.lua
         displayName: 'Test'
 
-  - job: TestLuaWindows
-    dependsOn: BuildLua
-    pool:
-      vmImage: 'windows-2019'
-    steps:
-      - checkout: none
-      - script: |
-          pip install hererocks
-          hererocks luaenv --lua 5.3 -rlatest
-        displayName: 'Install Lua'
-      - task: DownloadPipelineArtifact@0
-        inputs:
-          artifactName: 'luaOutput'
-          targetPath: bin
-      - script: |
-          call luaenv\bin\activate
-          lua -v
-          lua bin/HelloWorld.lua
-        displayName: 'Test'
-
   # Flash
 
   - job: BuildFlash
