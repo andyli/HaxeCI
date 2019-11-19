@@ -15,11 +15,6 @@ install:
   # Setup haxelib
   - mkdir "%HAXELIB_ROOT%"
   - haxelib setup "%HAXELIB_ROOT%"
-  # Install test dependencies
-  - cinst phantomjs -y
-  # Install php
-  - cinst php -y
-  - RefreshEnv
   # Install lua using hererocks
   - pip install hererocks
   - hererocks luaenv --lua 5.3 -rlatest
@@ -43,9 +38,7 @@ test_script:
   - haxe build-interp.hxml
   - haxe build-neko.hxml         && neko bin\HelloWorld.n
   - haxe build-js.hxml           && node bin\HelloWorld.js
-                                 && haxe phantomjs\run.hxml bin\HelloWorld.js
   - haxe build-java.hxml         && java -jar bin\HelloWorld.jar
-  - haxe build-php.hxml          && php bin\index.php
   - haxe build-cs.hxml           && bin\bin\HelloWorld.exe
   - haxe build-flash.hxml -D fdb && haxe flash\run.hxml bin\HelloWorld.swf
   - haxe build-cpp.hxml          && bin\HelloWorld.exe
