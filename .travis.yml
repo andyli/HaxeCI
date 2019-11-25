@@ -16,9 +16,8 @@ env:
 # Test with Haxe 4.0.2 and Haxe development.
 haxe:
   - "4.0.2"
+  - "3.4.7"
   - development
-
-neko: "2.3.0"
 
 matrix:
   # Allow Haxe development to fail.
