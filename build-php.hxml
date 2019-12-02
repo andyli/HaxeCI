@@ -1,2 +1,5 @@
 build-each.hxml
 -php bin
+
+# For Haxe 3. Not needed for Haxe 4.
+-D php7
