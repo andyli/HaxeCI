@@ -75,10 +75,6 @@ install:
       sudo luarocks install haxe-deps;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       sudo luarocks install haxe-deps;
-    elif [ "${TRAVIS_OS_NAME}" = "windows" ]; then
-      pip install hererocks;
-      hererocks luaenv --lua 5.3 -rlatest;
-      export PATH="$(pwd)/luaenv/bin:$PATH";
     fi
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
@@ -106,4 +102,4 @@ script:
   - haxe build-flash.hxml -D fdb && haxe flash/run.hxml bin/HelloWorld.swf
   - haxe build-cpp.hxml          && ./bin/HelloWorld
   - haxe build-python.hxml       && ( if [ "${TRAVIS_OS_NAME}" = "windows" ]; then python bin/HelloWorld.py; else python3 bin/HelloWorld.py; fi )
-  - haxe build-lua.hxml          && lua bin/HelloWorld.lua
+  - haxe build-lua.hxml          && ( if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then lua bin/HelloWorld.lua; fi )
