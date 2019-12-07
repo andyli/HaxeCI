@@ -2,6 +2,7 @@ import Sys.*;
 import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.io.*;
+import Install.*;
 
 class Run {
 	// https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html
@@ -41,11 +42,19 @@ class Run {
 			println(getContent(flashlog));
 		else {
 			println('does not exist: $flashlog');
+
 			var parts = Path.normalize(flashlog).split("/");
 			println(parts);
 			for (i in 0...parts.length-1) {
 				var path = parts.slice(0, i+1).join("/");
+				if (!exists(path)) break;
 				println('$path ${readDirectory(path)}');
+			}
+
+			if (exists(fpTrustFile)) {
+				println('content of $fpTrustFile:\n' + getContent(fpTrustFile));
+			} else {
+				println('does not exist: $fpTrustFile');
 			}
 		}
 		exit(exitCode);

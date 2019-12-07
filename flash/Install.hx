@@ -26,7 +26,7 @@ class Install {
 		}
 	}
 	// https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html
-	static var mmcfg(default, never) = switch (systemName()) {
+	static public var mmcfg(default, never) = switch (systemName()) {
 		case "Linux":
 			Path.join([getEnv("HOME"), "mm.cfg"]);
 		case "Mac":
@@ -42,7 +42,7 @@ class Install {
 			throw "unsupported system";
 	}
 	// http://help.adobe.com/en_US/ActionScript/3.0_ProgrammingAS3/WS5b3ccc516d4fbf351e63e3d118a9b90204-7c95.html
-	static var fpTrust(default, never) = switch (systemName()) {
+	static public var fpTrust(default, never) = switch (systemName()) {
 		case "Linux":
 			Path.join([getEnv("HOME"), ".macromedia/Flash_Player/#Security/FlashPlayerTrust"]);
 		case "Mac":
@@ -52,6 +52,7 @@ class Install {
 		case _:
 			throw "unsupported system";
 	}
+	static public var fpTrustFile(default, never) = Path.join([fpTrust, "test.cfg"]);
 	static function getLatestFPVersion():Array<Int> {
 		var appcast = Xml.parse(Http.requestUrl("http://fpdownload2.macromedia.com/get/flashplayer/update/current/xml/version_en_mac_pep.xml"));
 		var versionStr = new Access(appcast).node.XML.node.update.att.version;
@@ -87,7 +88,7 @@ class Install {
 
 		// Add the current directory as trusted, so exit() can be used
 		createDirectory(fpTrust);
-		saveContent(Path.join([fpTrust, "test.cfg"]), getCwd());
+		saveContent(fpTrustFile, getCwd());
 	}
 	static function download(url:String, saveAs:String):Void {
 		var http = new Http(url);
