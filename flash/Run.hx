@@ -36,11 +36,16 @@ class Run {
 				command("/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger", [fullPath(swf)]);
 			case "Windows":
 				// https://tracker.adobe.com/#/view/FP-4199064
-				var homedrive = getEnv("HOMEDRIVE");
-				var homepath = getEnv("HOMEPATH");
-				trace('HOMEDRIVE: $homedrive\nHOMEPATH: $homepath\nUSERPROFILE: ${getEnv("USERPROFILE")}');
-				if (homepath.startsWith(homedrive)) {
-					putEnv("HOMEPATH", homepath.substr(homedrive.length));
+				if (switch ([getEnv("HOMEDRIVE"), getEnv("HOMEPATH")]) {
+					case [null, _] | [_, null]: true;
+					case [homedrive, homepath] if (homepath.startsWith(homedrive)): true;
+					case _: false;
+				}) {
+					var userprofile = getEnv("USERPROFILE");
+					if (userprofile == null)
+						throw 'Invalid env vars\nHOMEDRIVE: ${getEnv("HOMEDRIVE")}\nHOMEPATH: ${getEnv("HOMEPATH")}\nUSERPROFILE: $userprofile';
+					putEnv("HOMEDRIVE", userprofile.substr(0,2));
+					putEnv("HOMEPATH", userprofile.substr(2));
 				}
 				command("flash\\flashplayer.exe", [fullPath(swf)]);
 			case _:
