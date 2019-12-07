@@ -3,6 +3,7 @@ import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.io.*;
 import Install.*;
+using StringTools;
 
 class Run {
 	// https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html
@@ -34,6 +35,12 @@ class Run {
 			case "Mac":
 				command("/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger", [fullPath(swf)]);
 			case "Windows":
+				// https://tracker.adobe.com/#/view/FP-4199064
+				var homedrive = getEnv("HOMEDRIVE");
+				var homepath = getEnv("HOMEPATH");
+				if (homepath.startsWith(homedrive)) {
+					putEnv("HOMEPATH", homepath.substr(homedrive.length));
+				}
 				command("flash\\flashplayer.exe", [fullPath(swf)]);
 			case _:
 				throw "unsupported platform";
