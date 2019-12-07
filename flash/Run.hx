@@ -56,6 +56,12 @@ class Run {
 			} else {
 				println('does not exist: $fpTrustFile');
 			}
+
+			if (exists(mmcfg)) {
+				println('content of $mmcfg:\n' + getContent(mmcfg));
+			} else {
+				println('does not exist: $mmcfg');
+			}
 		}
 		exit(exitCode);
 	}
