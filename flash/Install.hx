@@ -88,7 +88,7 @@ class Install {
 
 		// Add the current directory as trusted, so exit() can be used
 		createDirectory(fpTrust);
-		saveContent(fpTrustFile, getCwd());
+		saveContent(fpTrustFile, Path.removeTrailingSlashes(getCwd()));
 	}
 	static function download(url:String, saveAs:String):Void {
 		var http = new Http(url);
