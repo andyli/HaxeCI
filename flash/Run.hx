@@ -38,6 +38,7 @@ class Run {
 				// https://tracker.adobe.com/#/view/FP-4199064
 				var homedrive = getEnv("HOMEDRIVE");
 				var homepath = getEnv("HOMEPATH");
+				trace('HOMEDRIVE: $homedrive\nHOMEPATH: $homepath\nUSERPROFILE: ${getEnv("USERPROFILE")}');
 				if (homepath.startsWith(homedrive)) {
 					putEnv("HOMEPATH", homepath.substr(homedrive.length));
 				}
