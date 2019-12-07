@@ -44,9 +44,8 @@ class Run {
 			var parts = Path.normalize(flashlog).split("/");
 			println(parts);
 			for (i in 0...parts.length-1) {
-				var path = parts.splice(0, i+1).join("/");
-				println('ls $path');
-				command("ls", [path]);
+				var path = parts.slice(0, i+1).join("/");
+				println('$path ${readDirectory(path)}');
 			}
 		}
 		exit(exitCode);
