@@ -9,11 +9,6 @@ os:
 
 dist: bionic
 
-env:
-  global:
-    # Minor performance optimization.
-    - HOMEBREW_NO_INSTALL_CLEANUP=1
-
 # Test with multiple Haxe versions.
 haxe:
   - "4.0.3"
