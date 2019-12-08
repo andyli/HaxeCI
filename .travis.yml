@@ -44,6 +44,7 @@ addons:
       - libpcre3-dev
       - libssl-dev
   homebrew:
+    update: true
     packages:
       # C#
       - mono
