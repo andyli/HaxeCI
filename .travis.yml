@@ -1,21 +1,22 @@
 language: haxe
 
 # TravisCI by default run on linux.
-# Let's enable both linux and mac builds because why not?
+# Let's enable all linux, windows, and mac builds because why not?
 os:
-  - windows
   - linux
+  - windows
   - osx
 
 dist: bionic
 
 env:
   global:
+    # Minor performance optimization.
     - HOMEBREW_NO_INSTALL_CLEANUP=1
 
-# Test with Haxe 4.0.2 and Haxe development.
+# Test with multiple Haxe versions.
 haxe:
-  - "4.0.2"
+  - "4.0.3"
   - "3.4.7"
   - development
 
