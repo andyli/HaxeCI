@@ -61,10 +61,13 @@ install:
     fi
   # Various language runtimes for Windows
   - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then
-      choco install nodejs-lts --version 12.13.1 -y; export PATH="/c/Program Files/nodejs:$PATH";
-      choco install openjdk --version 11.0.1 -y; export PATH="/c/Program Files/OpenJDK/jdk-11.0.1/bin:$PATH";
-      choco install php --version 7.4.0 -y; export PATH="/c/tools/php74:$PATH"; sed -i 's/;extension_dir = "ext"/extension_dir = "ext"/; s/;extension=mbstring/extension=mbstring/' "/c/tools/php74/php.ini";
-      choco install python --version 3.7.1 -y; export PATH="/c/Python37/Scripts:/c/Python37:$PATH";
+      powershell -Command "Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iwr -useb get.scoop.sh | iex";
+      export PATH="$HOME/scoop/shims:$PATH";
+      scoop bucket add java; scoop install openjdk; export PATH="$HOME/scoop/apps/openjdk/current/bin:$PATH";
+      scoop bucket add versions;
+      scoop install nodejs12; export PATH="$HOME/scoop/apps/nodejs12/current:$PATH";
+      scoop install php74; printf "extension_dir=ext\nextension=mbstring" > "$HOME/scoop/apps/php74/7.4.0/cli/conf.d/extensions.ini"; export PHP_INI_SCAN_DIR="$HOME/scoop/apps/php74/7.4.0/cli:$HOME/scoop/apps/php74/7.4.0/cli/conf.d";
+      scoop install python37;
     fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then
