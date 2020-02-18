@@ -74,6 +74,10 @@ install:
     fi
   # Download and setup a standalone flash player debugger
   - haxe flash/install.hxml
+  # Prefer homebrew's python
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+      brew link --overwrite python;
+    fi
   # Install haxelibs
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then
       haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git;
