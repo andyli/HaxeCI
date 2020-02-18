@@ -565,7 +565,7 @@ jobs:
       - script: |
           set -ex
           brew update
-          brew install lua pcre
+          brew install lua
           brew install luarocks --HEAD # https://github.com/luarocks/luarocks/issues/1044
           sudo luarocks install lrexlib-pcre
           sudo luarocks install luasocket
