@@ -46,6 +46,8 @@ addons:
   homebrew:
     update: true
     packages:
+      # Python
+      - python
       # C#
       - mono
       # Lua
