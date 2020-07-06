@@ -68,6 +68,10 @@ install:
       choco install php --version 7.4.0 -y; export PATH="/c/tools/php74:$PATH"; sed -i 's/;extension_dir = "ext"/extension_dir = "ext"/; s/;extension=mbstring/extension=mbstring/' "/c/tools/php74/php.ini";
       choco install python --version 3.7.1 -y; export PATH="/c/Python37/Scripts:/c/Python37:$PATH";
     fi
+  # Magic to make haxelib works https://github.com/HaxeFoundation/neko/issues/196
+  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then
+      curl -sSLf https://lib.haxe.org/p/jQueryExtern/3.2.1/download/ -o /dev/null;
+    fi
   # Haxe Lua dependencies
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       sudo luarocks install haxe-deps;
