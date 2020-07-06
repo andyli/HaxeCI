@@ -11,7 +11,7 @@ dist: bionic
 
 # Test with multiple Haxe versions.
 haxe:
-  - "4.0.3"
+  - "4.1.2"
   - "3.4.7"
   - development
 
