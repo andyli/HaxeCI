@@ -80,7 +80,7 @@ install:
   - haxe flash/install.hxml
   # Prefer homebrew's python
   - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-      brew link --overwrite python;
+      brew link --overwrite python@3;
     fi
   # Install haxelibs
   - if [ "${TRAVIS_HAXE_VERSION}" = "development" ]; then
